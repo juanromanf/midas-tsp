@@ -7,7 +7,7 @@ import com.midas.tsp.annotations.Plans;
 import com.midas.tsp.annotations.quality.LogD;
 import com.midas.tsp.annotations.quality.LogDs;
 import com.midas.tsp.annotations.quality.ProcessPhase;
-import com.midas.tsp.controller.PsPController;
+import com.midas.tsp.controller.TSPController;
 import com.midas.tsp.model.Model;
 
 /**
@@ -41,7 +41,7 @@ public class MyPsp {
 	public static void main(String[] args) {
 
 		Model modelo = new Model();
-		PsPController controlador = new PsPController(modelo);
+		TSPController controlador = new TSPController(modelo);
 
 		try {
 

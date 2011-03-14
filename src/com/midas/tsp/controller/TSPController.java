@@ -25,7 +25,7 @@ import javax.tools.JavaCompiler.CompilationTask;
 import com.midas.tsp.annotations.quality.DetPlanQ;
 import com.midas.tsp.annotations.quality.PlanQ;
 import com.midas.tsp.annotations.quality.ProcessPhase;
-import com.midas.tsp.exceptions.MyPspException;
+import com.midas.tsp.exceptions.TSPException;
 import com.midas.tsp.model.Model;
 import com.midas.tsp.model.PspProcessor;
 import com.midas.tsp.util.JavaSourceOrDirectoryFilter;
@@ -41,7 +41,7 @@ import com.midas.tsp.util.JavaSourceOrDirectoryFilter;
  * Clase controladora la cual gestiona la ejecución del análisis de código y 
  * el procesamiento de los parametros de entrada
  */
-public class PsPController {
+public class TSPController {
 	
 	private Model model;
 	
@@ -53,7 +53,7 @@ public class PsPController {
 	
 	
 
-	public PsPController(Model model){
+	public TSPController(Model model){
 		this.model=model;
 		this.listaArchivos=new ArrayList<String>();
 	}
@@ -63,14 +63,14 @@ public class PsPController {
 	 * @author German Dario Camacho
 	 * @date 22/02/2011
 	 */
-	public void cargarParametros(String[] parametros) throws MyPspException{
+	public void cargarParametros(String[] parametros) throws TSPException{
 		
 		validar(parametros);
 		Map<String,String> parejas=new HashMap<String,String>();
 		
 		for(int i=0;i<parametros.length;i=i+2){
 			if(!parametros[i].startsWith("-")){
-				throw new com.midas.tsp.exceptions.MyPspException("No se reconoce la opción: "+parametros[i]);
+				throw new com.midas.tsp.exceptions.TSPException("No se reconoce la opción: "+parametros[i]);
 			}
 			parejas.put(parametros[i], parametros[i+1]);
 		}
@@ -81,7 +81,7 @@ public class PsPController {
 					archivo=parejas.get("-f");
 					listaArchivos.add(archivo);
 				}else {
-					throw new com.midas.tsp.exceptions.MyPspException("No se puede leer el archivo: "+parejas.get("-f"));
+					throw new com.midas.tsp.exceptions.TSPException("No se puede leer el archivo: "+parejas.get("-f"));
 				}
 
 		}
@@ -93,11 +93,11 @@ public class PsPController {
 					setDirectorio(parejas.get("-d"));
 					listaArchivos=cargarListaArchivos(tmp);
 					if(listaArchivos.size()==0){
-						throw new com.midas.tsp.exceptions.MyPspException("No se encontraron archivos para procesar.");
+						throw new com.midas.tsp.exceptions.TSPException("No se encontraron archivos para procesar.");
 
 					}
 				}else {
-					throw new com.midas.tsp.exceptions.MyPspException("No se puede leer el directorio: "+parejas.get("-d"));
+					throw new com.midas.tsp.exceptions.TSPException("No se puede leer el directorio: "+parejas.get("-d"));
 
 				}
 			
@@ -109,7 +109,7 @@ public class PsPController {
 				if(tmp.isDirectory()){
 					setDirPropiedades(parejas.get("-p"));
 				}else {
-					throw new com.midas.tsp.exceptions.MyPspException("No se puede leer el directorio: "+parejas.get("-p"));
+					throw new com.midas.tsp.exceptions.TSPException("No se puede leer el directorio: "+parejas.get("-p"));
 
 				}
 
@@ -123,15 +123,15 @@ public class PsPController {
 	 * @author German Dario Camacho
 	 * @date 22/02/2011
 	 */
-	private void validar(String[] parametros) throws MyPspException {
+	private void validar(String[] parametros) throws TSPException {
 			
 		if(parametros.length%2!=0){
-			throw new com.midas.tsp.exceptions.MyPspException("El número de parametros indicado no es correcto.");
+			throw new com.midas.tsp.exceptions.TSPException("El número de parametros indicado no es correcto.");
 		}
 		
 		List<String> params=Arrays.asList(parametros);
 		if(!params.contains("-f")&&!params.contains("-d")){
-			throw new com.midas.tsp.exceptions.MyPspException("Debe indicar un archivo o ruta a analizar.");
+			throw new com.midas.tsp.exceptions.TSPException("Debe indicar un archivo o ruta a analizar.");
 		}
 
 	}
@@ -142,7 +142,7 @@ public class PsPController {
 	 * @author German Dario Camacho
 	 * @date 06/03/2011
 	 */
-	public List<String> cargarListaArchivos(File directorioRecorrer) throws MyPspException{
+	public List<String> cargarListaArchivos(File directorioRecorrer) throws TSPException{
 		List<String> archivosTmp=new ArrayList<String>();
 		
 		for(File tmp:directorioRecorrer.listFiles(filtro)){
@@ -161,7 +161,7 @@ public class PsPController {
 	 * @author German Dario Camacho
 	 * @date 22/02/2011
 	 */
-	public void correrProcess() throws IOException, MyPspException{
+	public void correrProcess() throws IOException, TSPException{
 		
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		StandardJavaFileManager fileManager = compiler.getStandardFileManager(
@@ -171,7 +171,7 @@ public class PsPController {
 		File tempDir=new File("tempClasses");
 		if(!tempDir.exists()){
 			if(!tempDir.mkdir()){
-				throw new MyPspException("No se pudo crear el directorio " +
+				throw new TSPException("No se pudo crear el directorio " +
 													"temporal para la compilación.");
 			}
 		}
