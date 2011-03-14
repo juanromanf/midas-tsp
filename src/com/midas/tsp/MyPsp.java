@@ -1,3 +1,4 @@
+package com.midas.tsp;
 import java.io.IOException;
 
 import com.midas.tsp.annotations.LogT;
@@ -21,14 +22,14 @@ import com.midas.tsp.model.Model;
 })
 
 @LogTs({ 
-	@LogT(cycle = 1, date = "13/03/2011", id = 45, time = 130, who = "GDCS") ,
-	@LogT(cycle = 1, date = "14/03/2011", id = 999, time = 25, who = "GDCS") 
+	@LogT(cycle = 1, date = "13/03/2011", id = "1_45", time = 130, who = "GDCS") ,
+	@LogT(cycle = 1, date = "14/03/2011", id = "1_999", time = 25, who = "GDCS") 
 })
 
 @LogDs({ 
 	@LogD( id = 1, date = "13/03/2011", removed=true,
-				cycleInyected = 1, phaseInyected = ProcessPhase.DISENO, 
-				cycleDetected = 1, phaseDetected = ProcessPhase.CODIFICACION)
+				cycleInyected = 1, phaseInyected = ProcessPhase.DESIGN, 
+				cycleDetected = 1, phaseDetected = ProcessPhase.IMPLEMENTATION)
 })
 
 public class MyPsp {
