@@ -22,8 +22,10 @@ import com.midas.tsp.model.Model;
 })
 
 @LogTs({ 
-	@LogT(cycle = 1, date = "13/03/2011", id = "1_45", time = 130, who = "GDCS") ,
-	@LogT(cycle = 1, date = "14/03/2011", id = "1_999", time = 25, who = "GDCS") 
+	@LogT(cycle = 1, date = "13/03/2011", id = "1_45", time = 130, who = "GDCS"),
+	@LogT(cycle = 1, date = "14/03/2011", id = "1_999", time = 25, who = "GDCS"), 
+	@LogT(cycle = 1, date = "13/03/2011", id = "1_999", time = 130, who = "CIDC"),
+	@LogT(cycle = 1, date = "14/03/2011", id = "1_999", time = 240, who = "CIDC"),	
 })
 
 @LogDs({ 
@@ -32,7 +34,7 @@ import com.midas.tsp.model.Model;
 				cycleDetected = 1, phaseDetected = ProcessPhase.IMPLEMENTATION)
 })
 
-public class MyPsp {
+public class MyTSP {
 
 	/**
 	 * @param args
