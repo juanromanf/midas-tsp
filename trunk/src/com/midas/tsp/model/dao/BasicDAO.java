@@ -15,7 +15,7 @@ import com.midas.tsp.exceptions.TSPException;
  * @author carlos.duarte
  *
  */
-@LogTs({@LogT(cycle=1, date="14/03/2011", id="???", time=81, who="CIDC")})
+@LogTs({@LogT(cycle=1, date="14/03/2011", id="999", time=81, who="CIDC")})
 public class BasicDAO {
 
 	private FileInputStream input;

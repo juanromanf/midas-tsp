@@ -4,7 +4,6 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -40,7 +39,7 @@ public class Utility {
 	 * @return
 	 * @throws TSPException
 	 */
-	@LogTs({@LogT(cycle=1, date="14/03/2011", id="???", time=20, who="CIDC")})
+	@LogTs({@LogT(cycle=1, date="14/03/2011", id="999", time=20, who="CIDC")})
 	public static Properties convertMapToProperties(Map<String, LinkedList<String>> map)
 			throws TSPException {
 		Properties prop = null;
@@ -69,7 +68,7 @@ public class Utility {
 	 * @return
 	 * @throws TSPException
 	 */
-	@LogTs({@LogT(cycle=1, date="14/03/2011", id="???", time=15, who="CIDC")})
+	@LogTs({@LogT(cycle=1, date="14/03/2011", id="999", time=15, who="CIDC")})
 	public static Map<String, LinkedList<String>> convertPropertiesToMap(Properties prop) throws TSPException{
 		Map<String, LinkedList<String>> map = null;
 		try {
