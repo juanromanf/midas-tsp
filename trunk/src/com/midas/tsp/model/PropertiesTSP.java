@@ -10,7 +10,7 @@ import com.midas.tsp.annotations.LogT;
  * @date 22/03/2011
  *
  */
-@LogTs({@LogT(cycle=2, date="22/03/2011", id="???", time=3, who="CIDC")})
+@LogTs({@LogT(cycle=2, date="22/03/2011", id="47", time=3, who="CIDC")})
 public class PropertiesTSP {
 	/**
 	 * Atributo para el id del properties

@@ -10,7 +10,7 @@ import com.midas.tsp.annotations.LogTs;
  * @date 22/03/2011
  *
  */
-@LogTs({@LogT(cycle=2, date="22/03/2011", id="???", time=3, who="CIDC")})
+@LogTs({@LogT(cycle=2, date="22/03/2011", id="48", time=3, who="CIDC")})
 public class Task extends PropertiesTSP {
 	/**
 	 * Atributo para el ciclo de la tarea
