@@ -29,7 +29,7 @@ import com.midas.tsp.annotations.LogTs;
  * Clase que contiene el Windows para el panel de Administraci—n de Tareas
  *
  */
-@LogTs({@LogT(cycle=2, date="22/03/2011", id="???", time=72, who="CIDC")})
+@LogTs({@LogT(cycle=2, date="22/03/2011", id="22", time=72, who="CIDC")})
 public class TasksPanel {
 
 	private JFrame frame;

@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import com.midas.tsp.annotations.Loc;
 import com.midas.tsp.annotations.LocControl;
+import com.midas.tsp.annotations.LogT;
+import com.midas.tsp.annotations.LogTs;
 import com.midas.tsp.model.dao.BasicDAO;
 
 /**
@@ -16,6 +18,7 @@ import com.midas.tsp.model.dao.BasicDAO;
  * @date 22/03/2011
  *
  */
+@LogTs({@LogT(cycle=2, date="22/03/2011", id="50", time=22, who="CIDC")})
 public class BasicDAOTest {
 
 	/**
