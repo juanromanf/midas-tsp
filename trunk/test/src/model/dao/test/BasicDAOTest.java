@@ -18,7 +18,7 @@ import com.midas.tsp.model.dao.BasicDAO;
  * @date 22/03/2011
  *
  */
-@LogTs({@LogT(cycle=2, date="22/03/2011", id="50", time=22, who="CIDC")})
+@LogTs({@LogT(cycle=2, date="22/03/2011", id="21", time=22, who="CIDC")})
 public class BasicDAOTest {
 
 	/**
