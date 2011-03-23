@@ -26,6 +26,10 @@ import com.midas.tsp.model.Model;
 	@LogT(cycle = 1, date = "14/03/2011", id = "1_999", time = 25, who = "GDCS"), 
 	@LogT(cycle = 1, date = "13/03/2011", id = "1_999", time = 130, who = "CIDC"),
 	@LogT(cycle = 1, date = "14/03/2011", id = "1_999", time = 240, who = "CIDC"),	
+	@LogT(cycle = 2, date = "17/03/2011", id = "3", time = 115, who = "CIDC"),
+	@LogT(cycle = 2, date = "17/03/2011", id = "2", time = 96, who = "CIDC"),
+	@LogT(cycle = 2, date = "17/03/2011", id = "5", time = 30, who = "CIDC"),
+	@LogT(cycle = 2, date = "21/03/2011", id = "8", time = 90, who = "CIDC"),	
 })
 
 @LogDs({ 

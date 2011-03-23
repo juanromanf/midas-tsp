@@ -10,7 +10,7 @@ import com.midas.tsp.annotations.LogTs;
  * @date 22/03/2011
  *
  */
-@LogTs({@LogT(cycle=2, date="22/03/2011", id="49", time=1, who="CIDC")})
+@LogTs({@LogT(cycle=2, date="22/03/2011", id="16", time=1, who="CIDC")})
 public class TeamMember extends PropertiesTSP {
 	/**
 	 * Atributo para el rol del integrante de equipo
