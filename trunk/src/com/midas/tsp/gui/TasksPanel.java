@@ -21,8 +21,10 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import com.midas.tsp.annotations.Loc;
 import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
+import com.midas.tsp.annotations.LocControl;
 
 /**
  * @author CIDC
@@ -41,6 +43,7 @@ public class TasksPanel {
 	/**
 	 * Launch the application.
 	 */
+	@Loc(size=10, type=LocControl.LocType.REUTILIZADA, who="CIDC")
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -64,6 +67,7 @@ public class TasksPanel {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@Loc(size=140, type=LocControl.LocType.REUTILIZADA, who="CIDC")
 	private void initialize() {
 		frame = new JFrame();
 		
