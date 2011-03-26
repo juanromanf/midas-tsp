@@ -128,13 +128,12 @@ public class Utility {
 				String key = (String)entry.getKey();
 				String[] attributes = ((String)entry.getValue()).split(SEPARATOR_PROPERTIES);
 				if (file.getName().equals(TASK_PROPERTIES)) {
-					String[] id = key.split(SEPARATOR_ID);
 					Task task = new Task();
-					task.setCycle(Integer.parseInt(id[0]));
-					task.setId(id[1]);
+					task.setId(key);
 					task.setDescription(attributes[0]);
 					task.setSize(Integer.parseInt(attributes[1]));
 					task.setDuration(Integer.parseInt(attributes[2]));
+					task.setCycle(Integer.parseInt(attributes[3]));					
 					propertiesTSP.add(task);
 				}			
 				else {
