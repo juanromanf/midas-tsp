@@ -24,7 +24,7 @@ public class PropertiesTSP {
 	/**
 	 * @param id
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -32,7 +32,7 @@ public class PropertiesTSP {
 	/**
 	 * @return
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public String getId() {
 		return id;
 	}
@@ -40,7 +40,7 @@ public class PropertiesTSP {
 	/**
 	 * @param description
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -48,7 +48,7 @@ public class PropertiesTSP {
 	/**
 	 * @return
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public String getDescription() {
 		return description;
 	}

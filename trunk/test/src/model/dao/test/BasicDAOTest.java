@@ -35,7 +35,7 @@ public class BasicDAOTest {
 	 * @throws Exception
 	 */
 	@Before
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public void setUp() throws Exception {
 		basicDAO = new BasicDAO(PATH_PROPERTIES);
 	}
@@ -45,7 +45,7 @@ public class BasicDAOTest {
 	 * @throws Exception
 	 */
 	@Test
-	@Loc(size=6, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=6, type=LocControl.LocType.NEW, who="CIDC")
 	public void testSave() throws Exception {
 		Properties props = new Properties();
 		FileInputStream fis = null;
@@ -60,7 +60,7 @@ public class BasicDAOTest {
 	 * @throws Exception
 	 */
 	@Test
-	@Loc(size=2, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=2, type=LocControl.LocType.NEW, who="CIDC")
 	public void testLoad() throws Exception {
 		Properties prop = basicDAO.load();
 		Assert.assertNotNull(prop);

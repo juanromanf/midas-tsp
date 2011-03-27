@@ -35,7 +35,7 @@ import com.midas.tsp.model.Model;
 
 @LogDs({ 
 	@LogD( id = 1, date = "13/03/2011", removed=true,
-				cycleInyected = 1, phaseInyected = ProcessPhase.DESIGN, 
+				cycleInjected = 1, phaseInjected = ProcessPhase.DESIGN, 
 				cycleDetected = 1, phaseDetected = ProcessPhase.IMPLEMENTATION)
 })
 

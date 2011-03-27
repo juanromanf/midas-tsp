@@ -9,19 +9,26 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation to group many <code>Loc</code> objects
  * @author German Dario Camacho Sanchez
  * @date 07/03/2011
- * Anotacion que permite agrupar diferentes anotaciones Loc
- * para habilitar el control de las diferentes modificaciones a un método
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface LocControl {
+	/**
+	 * <code>Enum</code> to identify the diferent types of line of code
+	 * @author German Dario Camacho Sanchez
+	 * @date 07/03/2011
+	 */
 	enum LocType{
-		NUEVA,REUTILIZADA,MODIFICADA,ELIMINADA
+		NEW,REUSED,MODIFIED,DELETED, GENERATED
 	}
-	int cycle();
+	/**
+	 * @return an array of <code>Loc</code> objects
+	 */
 	Loc[] value();
+	
 
 }

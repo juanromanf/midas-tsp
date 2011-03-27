@@ -11,224 +11,420 @@ import java.util.Map;
 import com.midas.tsp.annotations.Loc;
 import com.midas.tsp.annotations.LocControl;
 import com.midas.tsp.annotations.LogT;
+import com.midas.tsp.annotations.LogTs;
 import com.midas.tsp.annotations.Plan;
 import com.midas.tsp.annotations.quality.LogD;
 import com.midas.tsp.annotations.quality.PlanQ;
-import com.midas.tsp.annotations.quality.ProcessPhase;
+import com.midas.tsp.exceptions.TSPException;
 import com.midas.tsp.util.Utility;
 
-
-
 /**
- * Se encarga de mantener la información relacionada a todas las anotaciones
- * que se procesen
+ * The Model class represents a set of information related to all the TSP
+ * annotations processed in a set of source. The data collected is stored as
+ * totals for useful information in order to have direct access and avoid
+ * recalculations. A number of Maps store data separating each TSP cycle founded
+ * in the data processed so if an special calculation is needed you can use the
+ * map related to calculate specific data.
+ * 
  * @author German Dario Camacho S.
  * @date 20/02/2011
  */
+
+@LogTs({
+		@LogT(cycle = 2, date = "22/03/2011", id = "4", time = 70, who = "GDCS"),
+		@LogT(cycle = 3, date = "25/03/2011", id = "19", time = 146, who = "GDCS") })
 public class Model {
-	
-	private Integer estimatedSize=0;
-	private Integer estimatedTime=0;
-	private Integer totalSize=0;
-	private Integer newLocs=0;
-	private Integer modifiedLocs=0;
-	private Integer addedLocs=0;
-	private Integer removedLocs=0;
-	private Integer totalTime=0;
-	private Integer totalIntTime=0;
-	private List<LogT> logTlist;
-	private List<LocControl> locControlList;
-	private List<Loc> locList;
-	private List<PlanQ> planQList;
-	private Map<ProcessPhase,Integer> errorsStage; 
-	
-	public Model(){
-		setLogTlist(new ArrayList<LogT>());
-		setLocList(new ArrayList<Loc>());
-		setLocControlList(new ArrayList<LocControl>());
-		setPlanQList(new ArrayList<PlanQ>());
-		setErrorsStage(new HashMap<ProcessPhase,Integer>());
+
+	/**
+	 * Stores the estimated total size of code in the analized project
+	 */
+	private Integer estimatedSize = 0;
+
+	/**
+	 *  Stores the estimated total time of development in the analized project
+	 */
+	private Integer estimatedTime = 0;
+
+	/**
+	 * Stores the total size of the project in locs, this value is acummulated
+	 * through calls of the add method
+	 */
+	private Integer totalSize = 0;
+
+	/**
+	 * Stores the total quantity of new locs founded int the project, this value
+	 * is acummulated through calls of the add method
+	 */
+	private Integer newLocs = 0;
+
+	/**
+	 * Stores the total quantity of modified locs founded int the project, this
+	 * value is acummulated through calls of the add method
+	 */
+	private Integer modifiedLocs = 0;
+
+	/**
+	 * Stores the total quantity of reused locs founded int the project, this
+	 * value is acummulated through calls of the add method
+	 */
+	private Integer reusedLocs = 0;
+
+	/**
+	 * Stores the total quantity of generated locs founded int the project, this
+	 * value is acummulated through calls of the add method
+	 */
+	private Integer generatedLocs = 0;
+
+	/**
+	 * Stores the total size of the project in locs, this value is acummulated
+	 * through calls of the add method
+	 */
+	private Integer removedLocs = 0;
+
+	/**
+	 * Stores the total size of the project in locs, this value is acummulated
+	 * through calls of the add method
+	 */
+	private Integer totalTime = 0;
+
+	/**
+	 * This <code>Map</code> stores each <code>Plan</code> object per TSP cycle,
+	 * only one <code>Plan</code> must exist per cycle, so, many add method
+	 * calls on a cycle with a <code>Plan</code> will override the
+	 * <code>Plan</code> previously added if that exists
+	 */
+	private Map<Integer, Plan> planPerCycle;
+
+	/**
+	 * This <code>Map</code> stores each <code>PlanQ</code> object per TSP
+	 * cycle, only one <code>PlanQ</code> must exist per cycle so, many add
+	 * method calls on a cycle with a <code>PlanQ</code> will override the
+	 * <code>PlanQ</code> previously added if that exists.
+	 */
+	private Map<Integer, PlanQ> planQPerCycle;
+
+	/**
+	 * This Map stores all the <code>LogT</code> annotations found per TSP
+	 * cycle, many add method calls on a cycle will add the <code>LogT</code> in
+	 * an <code>ArrayList<LogT></code> object tha will be stored in the map for
+	 * each TSP cycle.
+	 */
+	private Map<Integer, List<LogT>> logTsPerCycle;
+
+	/**
+	 * This <code>Map</code> stores all the <code>Loc</code> annotations found
+	 * per TSP cycle, many add method calls with an object <code>Loc</code> for
+	 * the same cycle will add the Loc in an <code>ArrayList<Loc></code> object
+	 * that will be stored in the map for each TSP cycle
+	 */
+	private Map<Integer, List<Loc>> locsPerCycle;
+
+	/**
+	 * This Map stores all the <code>LogD</code> annotations found per TSP
+	 * cycle, many add method calls on a cycle will add the LogT in an
+	 * <code>ArrayList<LogT></code> object tha will be stored in the map for
+	 * each TSP cycle
+	 */
+	private Map<Integer, List<LogD>> logDsPerCycle;
+
+	/**
+	 * Creates an instance of <code>Model</code> and initializes all the maps to
+	 * empy instances All totals are set to zero at the creation of the instance
+	 */
+	public Model() {
+
+		planPerCycle = new HashMap<Integer, Plan>();
+		planQPerCycle = new HashMap<Integer, PlanQ>();
+		logTsPerCycle = new HashMap<Integer, List<LogT>>();
+		locsPerCycle = new HashMap<Integer, List<Loc>>();
+		logDsPerCycle = new HashMap<Integer, List<LogD>>();
+
 	}
 
+	/**
+	 * Process an <code>LogT</code> adding it to the cycle it belongs and
+	 * acummulating the time on the <code>totalTime</code> property.
+	 * 
+	 * @param object
+	 *            the specified <code>LogT</code> to process
+	 * @throws TSPException
+	 *             In case any error were raised in the method invocation
+	 */
+	@LocControl(value = {
+			@Loc(cycle = 2, size = 7, type = LocControl.LocType.NEW, who = "GDCS"),
+			@Loc(cycle = 2, size = 2, type = LocControl.LocType.DELETED, who = "GDCS"),
+			@Loc(cycle = 3, size = 1, type = LocControl.LocType.NEW, who = "GDCS") })
+	public void add(LogT object) throws TSPException {
 
-	public void addLogT(LogT tmp){
-		totalTime+=tmp.time();
-		getLogTlist().add(tmp);
-	}
-	
+		Utility.notNullValidation(object, "adding a LogT");
 
-	public void setPlan(Plan tmp){
-		estimatedSize=estimatedSize+tmp.size();
-		estimatedTime=estimatedTime+ tmp.time();
-	}
-	
+		List<LogT> logTsList = null;
+		logTsList = logTsPerCycle.get(object.cycle());
 
-	public void addPlanQ(PlanQ tmp){
-		getPlanQList().add(tmp);
-	}
-	
-
-	public void addLogD(LogD tmp){
-		Integer tmpInt=0;
-		if(errorsStage.get(tmp.phaseDetected())==null){
-			errorsStage.put(tmp.phaseDetected(),tmpInt);
+		if (logTsList == null) {
+			logTsList = new ArrayList<LogT>();
+			logTsPerCycle.put(object.cycle(), logTsList);
 		}
-		tmpInt=errorsStage.get(tmp.phaseDetected());
-		errorsStage.put(tmp.phaseDetected(),tmpInt+1);
+
+		logTsList.add(object);
+		totalTime += object.time();
+
 	}
-	
-	public Double getProductivity(){
-		if(getTotalTime()<=0){
-			return 0.0;
+
+	/**
+	 * Process an <code>Plan</code> adding it to the cycle it belongs.
+	 * 
+	 * @param object
+	 *            the specified <code>Plan</code> to process
+	 * @throws TSPException
+	 *             In case any error were raised in the method invocation
+	 */
+	@LocControl({
+			@Loc(cycle = 2, size = 1, type = LocControl.LocType.NEW, who = "GDCS"),
+			@Loc(cycle = 2, size = 2, type = LocControl.LocType.REUSED, who = "GDCS"),
+			@Loc(cycle = 3, size = 1, type = LocControl.LocType.NEW, who = "GDCS") })
+	public void add(Plan object) throws TSPException {
+
+		Utility.notNullValidation(object, "adding a Plan");
+		planPerCycle.put(object.cycle(), object);
+		estimatedSize += object.size();
+		estimatedTime += object.time();
+	}
+
+	/**
+	 * Process an <code>PlanQ</code> adding it to the cycle it belongs.
+	 * 
+	 * @param object
+	 *            the specified <code>PlanQ</code> to process
+	 * @throws TSPException
+	 *             In case any error were raised in the method invocation
+	 */
+	@LocControl(value = {
+			@Loc(cycle = 2, size = 1, type = LocControl.LocType.NEW, who = "GDCS"),
+			@Loc(cycle = 2, size = 3, type = LocControl.LocType.DELETED, who = "GDCS"),
+			@Loc(cycle = 3, size = 1, type = LocControl.LocType.NEW, who = "GDCS") })
+	public void add(PlanQ object) throws TSPException {
+
+		Utility.notNullValidation(object, "adding a PlanQ");
+		planQPerCycle.put(object.cycle(), object);
+	}
+
+	/**
+	 * Process an <code>LogD</code> adding it to the cycle it belongs.
+	 * 
+	 * @param object
+	 *            the specified <code>LogD</code> to process
+	 * @throws TSPException
+	 *             In case any error were raised in the method invocation
+	 */
+	@LocControl(value = {
+			@Loc(cycle = 2, size = 6, type = LocControl.LocType.NEW, who = "GDCS"),
+			@Loc(cycle = 2, size = 6, type = LocControl.LocType.DELETED, who = "GDCS"),
+			@Loc(cycle = 3, size = 1, type = LocControl.LocType.NEW, who = "GDCS") })
+	public void add(LogD object) throws TSPException {
+
+		Utility.notNullValidation(object, "adding a LogD");
+		List<LogD> listaDefectos = null;
+		listaDefectos = logDsPerCycle.get(object.cycleDetected());
+
+		if (listaDefectos == null) {
+			listaDefectos = new ArrayList<LogD>();
+			logDsPerCycle.put(object.cycleDetected(), listaDefectos);
 		}
-		return getTotalSize().doubleValue()/Utility.minutes2hours(getTotalTime()-getTotalIntTime());
-	}
-	
+		listaDefectos.add(object);
 
-	public void addLoc(Loc tmp){
-		
-		switch (tmp.type()){
-			case NUEVA :{
-				totalSize+=tmp.size();
-				newLocs+=tmp.size();
-				break;
-			}case REUTILIZADA :{
-				totalSize+=tmp.size();
-				addedLocs+=tmp.size();
-				break;
-			}case MODIFICADA :{
-				modifiedLocs+=tmp.size();
-				break;
-			}case ELIMINADA :{
-				totalSize-=tmp.size();
-				removedLocs+=tmp.size();
-				break;
-			}
+	}
+
+	/**
+	 * Process an <code>Loc</code> adding it to the cycle it belongs.
+	 * 
+	 * @param object
+	 *            the specified <code>Loc</code> to process
+	 * @throws TSPException
+	 *             In case any error were raised in the method invocation
+	 */
+	@LocControl(value = {
+			@Loc(cycle = 2, size = 6, type = LocControl.LocType.NEW, who = "GDCS"),
+			@Loc(cycle = 2, size = 17, type = LocControl.LocType.DELETED, who = "GDCS"),
+			@Loc(cycle = 3, size = 20, type = LocControl.LocType.NEW, who = "GDCS") })
+	public void add(Loc object) throws TSPException {
+
+		Utility.notNullValidation(object, "adding a Loc");
+		List<Loc> listaLocs = null;
+		listaLocs = locsPerCycle.get(object.cycle());
+		if (listaLocs == null) {
+			listaLocs = new ArrayList<Loc>();
+			locsPerCycle.put(object.cycle(), listaLocs);
 		}
-		
-		getLocList().add(tmp);
-		
-	}
-	
+		switch (object.type()) {
+		case NEW: {
+			newLocs += object.size();
+			break;
+		}
+		case REUSED: {
+			reusedLocs += object.size();
+			break;
+		}
+		case MODIFIED: {
+			modifiedLocs += object.size();
+			break;
+		}
+		case GENERATED: {
+			generatedLocs += object.size();
+			break;
+		}
+		case DELETED: {
+			removedLocs += object.size();
+			break;
+		}
+		default: {
+			throw new TSPException("Loc without type has been detected.");
+		}
+		}
 
-	public List<Loc> getLocList() {
-		return locList;
-	}
-	
-
-	public void setLocList(List<Loc> locList) {
-		this.locList = locList;
+		listaLocs.add(object);
+		totalSize += object.size();
 	}
 
+	/**
+	 * Process an <code>LocControl</code> obtaining all the <code>Loc</code>
+	 * object it carries.
+	 * 
+	 * @param object
+	 *            the specified <code>LocControl</code> to process
+	 * @throws TSPException
+	 *             In case any error were raised in the method invocation
+	 */
+	@LocControl(value = {
+			@Loc(cycle = 2, size = 6, type = LocControl.LocType.NEW, who = "GDCS"),
+			@Loc(cycle = 2, size = 17, type = LocControl.LocType.DELETED, who = "GDCS"),
+			@Loc(cycle = 3, size = 1, type = LocControl.LocType.NEW, who = "GDCS") })
+	public void add(LocControl object) throws TSPException {
+
+		Utility.notNullValidation(object, "adding a Loc");
+		for (Loc tmpLoc : object.value()) {
+			add(tmpLoc);
+		}
+	}
+
+	/**
+	 * @return Returns the estimated size of the processed project
+	 */
+	@LocControl(value = {
+			@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS"),
+			@Loc(cycle = 2, size = 13, type = LocControl.LocType.DELETED, who = "GDCS") })
 	public Integer getEstimatedSize() {
 		return estimatedSize;
 	}
-	
-	
-	public void setEstimatedSize(Integer estimatedSize) {
-		this.estimatedSize = estimatedSize;
-	}
 
+	/**
+	 * @return Returns the estimated time of the processed project
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
 	public Integer getEstimatedTime() {
 		return estimatedTime;
 	}
-	
 
-	public void setEstimatedTime(Integer estimatedTime) {
-		this.estimatedTime = estimatedTime;
-	}
-	
+	/**
+	 * @return Returns the total size of the processed project
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
 	public Integer getTotalSize() {
 		return totalSize;
 	}
 
-	public void setTotalSize(Integer totalSize) {
-		this.totalSize = totalSize;
-	}
-	
-
+	/**
+	 * @return Returns the total time of the processed project
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
 	public Integer getTotalTime() {
 		return totalTime;
 	}
-	
 
-	public void setTotalTime(Integer totalTime) {
-		this.totalTime = totalTime;
-	}
-
-	public Integer getTotalIntTime() {
-		return totalIntTime;
-	}
-	
-
-	public void setTotalIntTime(Integer totalIntTime) {
-		this.totalIntTime = totalIntTime;
-	}
-
-
-	public void setLogTlist(List<LogT> logTlist) {
-		this.logTlist = logTlist;
-	}
-
-	
-	public List<LogT> getLogTlist() {
-		return logTlist;
-	}
-
-	public List<LocControl> getLocControlList() {
-		return locControlList;
-	}
-
-	public void setLocControlList(List<LocControl> locControlList) {
-		this.locControlList = locControlList;
-	}
-
+	/**
+	 * @return Returns the new locs of the processed project
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
 	public Integer getNewLocs() {
 		return newLocs;
 	}
 
-	public void setNewLocs(Integer newLocs) {
-		this.newLocs = newLocs;
-	}
-
+	/**
+	 * @return Returns the modified locs of the processed project
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
 	public Integer getModifiedLocs() {
 		return modifiedLocs;
 	}
 
-	public void setModifiedLocs(Integer modifiedLocs) {
-		this.modifiedLocs = modifiedLocs;
+	/**
+	 * @return Returns the reused locs of the processed project
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
+	public Integer getReusedLocs() {
+		return reusedLocs;
 	}
 
-	public Integer getAddedLocs() {
-		return addedLocs;
-	}
-
-	public void setAddedLocs(Integer addedLocs) {
-		this.addedLocs = addedLocs;
-	}
-
+	/**
+	 * @return Returns the removed locs of the processed project
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
 	public Integer getRemovedLocs() {
 		return removedLocs;
 	}
 
-	public void setRemovedLocs(Integer removedLocs) {
-		this.removedLocs = removedLocs;
+	/**
+	 * @return Returns the <code>Map</code> that contains all <code>Plan</code>
+	 *         objects per cycle
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
+	public Map<Integer, Plan> getPlanPerCycle() {
+		return planPerCycle;
 	}
 
-	public void setPlanQList(List<PlanQ> planQList) {
-		this.planQList = planQList;
+	/**
+	 * @return Returns the <code>Map</code> that contains all <code>PlanQ</code>
+	 *         objects per cycle
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
+	public Map<Integer, PlanQ> getPlanQPerCycle() {
+		return planQPerCycle;
 	}
 
-	public List<PlanQ> getPlanQList() {
-		return planQList;
+	/**
+	 * @return Returns the <code>Map</code> that contains all <code>LogT</code>
+	 *         objects per cycle
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
+	public Map<Integer, List<LogT>> getLogTsPerCycle() {
+
+		return logTsPerCycle;
 	}
 
-	public void setErrorsStage(Map<ProcessPhase,Integer> errorsStage) {
-		this.errorsStage = errorsStage;
+	/**
+	 * @return Returns the <code>Map</code> that contains all <code>LogT</code>
+	 *         objects per cycle
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
+	public Map<Integer, List<Loc>> getLocsPerCycle() {
+		return locsPerCycle;
 	}
 
-	public Map<ProcessPhase,Integer> getErrorsStage() {
-		return errorsStage;
+	/**
+	 * @return Returns the <code>Map</code> that contains all <code>LogD</code>
+	 *         objects per cycle
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
+	public Map<Integer, List<LogD>> getLogDsPerCycle() {
+		return logDsPerCycle;
+	}
+
+	/**
+	 * @return Returns the generated locs of the processed project
+	 */
+	@Loc(cycle = 2, size = 1, type = LocControl.LocType.GENERATED, who = "GDCS")
+	public Integer getGeneratedLocs() {
+		return generatedLocs;
 	}
 
 }
