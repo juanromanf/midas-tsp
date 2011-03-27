@@ -20,7 +20,7 @@ public class TeamMember extends PropertiesTSP {
 	/**
 	 * @param rol
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public void setRol(int rol) {
 		this.rol = rol;
 	}
@@ -28,7 +28,7 @@ public class TeamMember extends PropertiesTSP {
 	/**
 	 * @return
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public int getRol() {
 		return rol;
 	}	

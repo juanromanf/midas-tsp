@@ -21,10 +21,6 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler.CompilationTask;
-
-import com.midas.tsp.annotations.quality.DetPlanQ;
-import com.midas.tsp.annotations.quality.PlanQ;
-import com.midas.tsp.annotations.quality.ProcessPhase;
 import com.midas.tsp.exceptions.TSPException;
 import com.midas.tsp.model.Model;
 import com.midas.tsp.model.PspProcessor;
@@ -207,7 +203,7 @@ public class TSPController {
 
 	public void mostrarResumenConsola(){
 		
-		System.out.println("Resultados:");
+		/*System.out.println("Resultados:");
 		System.out.println("Plan de Calidad(Errores a inyectar, Errores a detectar): ");
 		if(model.getPlanQList().size()>0){
 			System.out.println("----------->");
@@ -233,7 +229,7 @@ public class TSPController {
 			}
 		}
 		System.out.println("Productividad(Loc/hora): "+com.midas.tsp.util.Utility.numberFormatter.format(model.getProductivity()));
-		
+		*/
 	}
 	
 	public void setListaArchivos(List<String> listaArchivos) {
@@ -287,7 +283,7 @@ public class TSPController {
 		@LogInt(date="06/03/2011",time=10,inte=11)
 	})
 	
-	@PlanQ(date="06/03/2011",
+	@PlanQ(date="06/03/2011", cycle=2,
 		   details={
 			@DetPlanQ(stage=Stage.DISENO,inyect=0,remove=0),
 			@DetPlanQ(stage=Stage.PLANEACION,inyect=0,remove=0),

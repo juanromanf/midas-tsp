@@ -43,7 +43,7 @@ public class TasksPanel {
 	/**
 	 * Launch the application.
 	 */
-	@Loc(size=10, type=LocControl.LocType.REUTILIZADA, who="CIDC")
+	@Loc(cycle=2,size=10, type=LocControl.LocType.GENERATED, who="CIDC")
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -67,7 +67,7 @@ public class TasksPanel {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	@Loc(size=140, type=LocControl.LocType.REUTILIZADA, who="CIDC")
+	@Loc(cycle=2,size=140, type=LocControl.LocType.GENERATED, who="CIDC")
 	private void initialize() {
 		frame = new JFrame();
 		

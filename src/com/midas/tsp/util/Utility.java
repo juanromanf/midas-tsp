@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import com.midas.tsp.annotations.Loc;
+import com.midas.tsp.annotations.LocControl;
 import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
 import com.midas.tsp.exceptions.TSPException;
@@ -19,9 +21,9 @@ import com.midas.tsp.model.PropertiesTSP;
 import com.midas.tsp.model.Task;
 
 /**
+ * Utility class with transversal functionalities 
  * @author German Dario Camacho S.
  * @date 21/02/2011 Clase con diferentes utilerias para conversiones u
- *       operaciones sobre los datos
  */
 public class Utility {
 
@@ -106,6 +108,23 @@ public class Utility {
 			throw new TSPException(ex);
 		}
 		return propertiesTSP;
+	}
+	
+	/**
+	 * Evaluates an object to verify that the reference is not null, if null a excepetion is raised
+	 * @param object The reference to be tested
+	 * @param where Description of the place in wich the validatoins is done
+	 * @throws TSPException Exception with a message about the null reference detected
+	 */
+	@LocControl({
+		@Loc(cycle = 3, size = 3, type = LocControl.LocType.NEW, who = "GDCS"), })
+	public static void notNullValidation(Object object, String where)
+			throws TSPException {
+		if (object == null) {
+			throw new TSPException("Error, processing a null object when "
+					+ where);
+		}
+
 	}
 
 }

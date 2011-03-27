@@ -4,12 +4,14 @@
 package com.midas.tsp.annotations.quality;
 
 /**
+ * Annotation to group many <code>LogD</code> objects
  * @author German Dario Camacho Sanchez
  * @date 07/03/2011
- * Anotacion que permite agrupar diferentes anotaciones de log de errores
- * corregidos
  *
  */
 public @interface LogDs {
+	/**
+	 * @return an array of <code>LogD</code> objects
+	 */
 	LogD[] value();
 }

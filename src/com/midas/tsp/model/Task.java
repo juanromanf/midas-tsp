@@ -28,7 +28,7 @@ public class Task extends PropertiesTSP {
 	/**
 	 * @param duration
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
@@ -36,7 +36,7 @@ public class Task extends PropertiesTSP {
 	/**
 	 * @return
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public int getDuration() {
 		return duration;
 	}
@@ -44,7 +44,7 @@ public class Task extends PropertiesTSP {
 	/**
 	 * @param size
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public void setSize(int size) {
 		this.size = size;
 	}
@@ -52,7 +52,7 @@ public class Task extends PropertiesTSP {
 	/**
 	 * @return
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public int getSize() {
 		return size;
 	}
@@ -60,7 +60,7 @@ public class Task extends PropertiesTSP {
 	/**
 	 * @param cycle
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public void setCycle(int cycle) {
 		this.cycle = cycle;
 	}
@@ -68,7 +68,7 @@ public class Task extends PropertiesTSP {
 	/**
 	 * @return
 	 */
-	@Loc(size=1, type=LocControl.LocType.NUEVA, who="CIDC")
+	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
 	public int getCycle() {
 		return cycle;
 	}
