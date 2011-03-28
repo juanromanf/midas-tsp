@@ -205,9 +205,16 @@ public class TSPApplication {
 		tabbedPane.addTab("Team", new ImageIcon(TSPApplication.class.getResource("/com/midas/tsp/gui/resources/people.png")), tabTeam, null);
 		tabTeam.setLayout(new BorderLayout(0, 0));
 		
+		JPanel tabTask = new JPanel();
+		tabbedPane.addTab("Task", new ImageIcon(TSPApplication.class.getResource("/com/midas/tsp/gui/resources/people.png")), tabTask, null);
+		tabTask.setLayout(new BorderLayout(0, 0));
+		
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setResizeWeight(0.1);
 		tabTeam.add(splitPane);
+		
+		JPanel tasksPanel = new TasksPanel();
+		tabTask.add(tasksPanel);
 		
 		JTree treeMembers = new JTree();
 		splitPane.setLeftComponent(treeMembers);
