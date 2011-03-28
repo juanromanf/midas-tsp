@@ -24,7 +24,7 @@ public class BasicDAOTest {
 	/**
 	 * Constante con el path del properties a Probar
 	 */
-	private static final String PATH_PROPERTIES = "/Volumes/Archivos/ECOS_NotSync/workspace/midas-tsp/properties/defects.properties";
+	private static final String PATH_PROPERTIES = "/Volumes/Archivos/ECOS_NotSync/workspace/midas-tsp/properties/task.properties";
 	/**
 	 * Almancena Instancia BasicDAO
 	 */
@@ -35,7 +35,9 @@ public class BasicDAOTest {
 	 * @throws Exception
 	 */
 	@Before
-	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
+	@LocControl(value = {
+			@Loc(size=1, type=LocControl.LocType.NEW, who="CIDC", cycle=2)
+	})
 	public void setUp() throws Exception {
 		basicDAO = new BasicDAO(PATH_PROPERTIES);
 	}
@@ -45,7 +47,9 @@ public class BasicDAOTest {
 	 * @throws Exception
 	 */
 	@Test
-	@Loc(cycle=1,size=6, type=LocControl.LocType.NEW, who="CIDC")
+	@LocControl(value = {
+			@Loc(size=6, type=LocControl.LocType.NEW, who="CIDC", cycle=2)
+	})
 	public void testSave() throws Exception {
 		Properties props = new Properties();
 		FileInputStream fis = null;
@@ -60,7 +64,9 @@ public class BasicDAOTest {
 	 * @throws Exception
 	 */
 	@Test
-	@Loc(cycle=1,size=2, type=LocControl.LocType.NEW, who="CIDC")
+	@LocControl(value = {
+			@Loc(size=2, type=LocControl.LocType.NEW, who="CIDC", cycle=2)
+	})
 	public void testLoad() throws Exception {
 		Properties prop = basicDAO.load();
 		Assert.assertNotNull(prop);
