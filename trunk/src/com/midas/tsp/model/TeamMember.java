@@ -6,21 +6,23 @@ import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
 
 /**
- * @author CIDC
+ * @author Carlos Ivan Duarte C.
  * @date 22/03/2011
  *
  */
 @LogTs({@LogT(cycle=2, date="22/03/2011", id="16", time=1, who="CIDC")})
 public class TeamMember extends PropertiesTSP {
 	/**
-	 * Atributo para el rol del integrante de equipo
+	 * Attribute to the role of team member
 	 */
 	private int rol;
 
 	/**
 	 * @param rol
 	 */
-	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
+	@LocControl(value = {
+			@Loc(size=1, type=LocControl.LocType.NEW, who="CIDC", cycle=2)
+	})
 	public void setRol(int rol) {
 		this.rol = rol;
 	}
@@ -28,7 +30,9 @@ public class TeamMember extends PropertiesTSP {
 	/**
 	 * @return
 	 */
-	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
+	@LocControl(value = {
+			@Loc(size=1, type=LocControl.LocType.NEW, who="CIDC", cycle=2)
+	})
 	public int getRol() {
 		return rol;
 	}	

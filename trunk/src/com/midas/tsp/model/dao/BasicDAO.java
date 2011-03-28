@@ -1,64 +1,76 @@
 package com.midas.tsp.model.dao;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import com.midas.tsp.annotations.Loc;
+import com.midas.tsp.annotations.LocControl;
 import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
 import com.midas.tsp.exceptions.TSPException;
 
 /**
- * Clase que permite persistir un properties
- * @author carlos.duarte
+ * Class for persist Properties
+ * @author Carlos Ivan Duarte C.
+ * @date 22/03/2011
  *
  */
 @LogTs({@LogT(cycle=1, date="14/03/2011", id="999", time=81, who="CIDC")})
 public class BasicDAO {
-
-	private FileInputStream input;
-	private FileOutputStream output;
+	
+	private String pathProperties;
 	
 	/**
-	 * Constructor que recibe el path del archivo de propiedades a persistir
+	 * Constructor that takes the file path to persist properties
 	 * @param pathProperties
 	 * @throws TSPException
 	 */
+	@LocControl(value = {
+			@Loc(size=2, type=LocControl.LocType.NEW, who="CIDC", cycle=3),
+			@Loc(size=2, type=LocControl.LocType.DELETED, who="CIDC", cycle=3),
+			@Loc(size=1, type=LocControl.LocType.DELETED, who="CIDC", cycle=3)
+	})
 	public BasicDAO(String pathProperties) throws TSPException {
-		try {
-			input = new FileInputStream(pathProperties);
-			output = new FileOutputStream(pathProperties);
-		}
-		catch (FileNotFoundException ex) {
-			throw new TSPException(ex);
-		}
+		this.pathProperties = pathProperties;
 	}
 	
 	/**
-	 * Permite persistir un archivo de propiedades
+	 * Persist a properties file
 	 * @param properties
 	 * @throws TSPException
 	 */
+	@LocControl(value = {
+			@Loc(size=9, type=LocControl.LocType.NEW, who="CIDC", cycle=3)
+	})
 	public void save(Properties properties) throws TSPException {
-		try {
-			properties.store(output, null);
+		FileOutputStream fos = null;
+		try {			
+			fos = new FileOutputStream(pathProperties);
+			properties.store(fos, null);
+			fos.close();
 		}
 		catch (IOException ex) {
 			throw new TSPException(ex);
-		}
+		}		
 	}	
 	
-	/** Permite cargar un archivo de propiedadess
+	/** Load a properties file
 	 * @return
 	 * @throws TSPException
 	 */
+	@LocControl(value = {
+			@Loc(size=12, type=LocControl.LocType.NEW, who="CIDC", cycle=3)
+	})
 	public Properties load() throws TSPException {
 		Properties prop = null;
+		FileInputStream fis = null;
 		try {
+			fis = new FileInputStream(pathProperties);
 			prop = new Properties();
-			prop.load(input);
+			prop.load(fis);
+			fis.close();			
 		}
 		catch (IOException ex) {
 			throw new TSPException(ex);

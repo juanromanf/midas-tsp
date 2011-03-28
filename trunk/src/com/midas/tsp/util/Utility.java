@@ -1,6 +1,5 @@
 package com.midas.tsp.util;
 
-import static com.midas.tsp.Constants.SEPARATOR_ID;
 import static com.midas.tsp.Constants.SEPARATOR_PROPERTIES;
 import static com.midas.tsp.Constants.TASK_PROPERTIES;
 
@@ -30,23 +29,29 @@ public class Utility {
 	public static NumberFormat numberFormatter = NumberFormat.getInstance();
 
 	/**
-	 * Metodo que convierte minutos a horas
+	 * Convert minutes to hours
 	 * 
 	 * @param minutes
-	 *            minutos a convertir
-	 * @return Double con la cantidad de horas calculadas
+	 *            minutes to convert
+	 * @return Double hours calculated
 	 */
+	@LocControl(value = {
+			@Loc(size=1, type=LocControl.LocType.NEW, who="GDCS", cycle=3)
+	})
 	public static Double minutes2hours(Integer minutes) {
 		return minutes / 60.0;
 	}
 	
 	/**
-	 * Convierte un PropertiesTSP a Properties de java
+	 * Convert a PropertiesTSP to Properties of API
 	 * @param propertiesTSP
 	 * @return
 	 * @throws TSPException
 	 */
 	@LogTs({@LogT(cycle=2, date="17/04/2011", id="???", time=20, who="CIDC")})
+	@LocControl(value = {
+			@Loc(size=17, type=LocControl.LocType.NEW, who="CIDC", cycle=3)
+	})
 	public static Properties convertToProperties(List<? extends PropertiesTSP> propertiesTSP) throws TSPException {
 		Properties properties = null;
 		try {
@@ -54,10 +59,11 @@ public class Utility {
 			for (PropertiesTSP propTSP : propertiesTSP) {
 				if (propTSP instanceof Task) {
 					Task task = (Task)propTSP;
-					properties.setProperty(task.getCycle() + SEPARATOR_ID + task.getId(), 
+					properties.setProperty(task.getId(), 
 									 task.getDescription() + SEPARATOR_PROPERTIES + 
 									 task.getDuration() + SEPARATOR_PROPERTIES + 
-									 task.getSize());					
+									 task.getSize() + SEPARATOR_PROPERTIES + 
+									 task.getCycle());					
 				}
 				else {
 					properties.setProperty(propTSP.getId(), propTSP.getDescription());
@@ -70,23 +76,30 @@ public class Utility {
 		return properties;
 	}
 	
-	/** Convierte un Properties java a una Lista de PropertiesTSP
+	/** Convert a Properties of API to PropertiesTSP
 	 * @param file
 	 * @return
 	 * @throws TSPException
 	 */
+	@LocControl(value = {
+			@Loc(size=35, type=LocControl.LocType.NEW, who="CIDC", cycle=3)
+	})
 	@LogTs({@LogT(cycle=2, date="17/04/2011", id="???", time=30, who="CIDC")})
-	public static List<? extends PropertiesTSP> convertoToPropertiesTSP(File file) throws TSPException {
+	public static List<? extends PropertiesTSP> convertoToPropertiesTSP(String path) throws TSPException {
 		List<PropertiesTSP> propertiesTSP = null;
 		Properties properties = null;
+		File file = null;
+		FileInputStream stream = null;
 		try {
 			properties = new Properties();
-			FileInputStream stream = new FileInputStream(file);
+			file = new File(path);
+			stream = new FileInputStream(file);
 			properties.load(stream);
+			stream.close();
 			propertiesTSP = new LinkedList<PropertiesTSP>();
 			for (Entry<Object, Object> entry : properties.entrySet()) {
 				String key = (String)entry.getKey();
-				String[] attributes = ((String)entry.getValue()).split(SEPARATOR_PROPERTIES);
+				String[] attributes = ((String)entry.getValue()).split("\\" + SEPARATOR_PROPERTIES);
 				if (file.getName().equals(TASK_PROPERTIES)) {
 					Task task = new Task();
 					task.setId(key);

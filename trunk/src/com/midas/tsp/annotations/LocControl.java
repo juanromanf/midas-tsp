@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.CONSTRUCTOR})
 public @interface LocControl {
 	/**
 	 * <code>Enum</code> to identify the diferent types of line of code

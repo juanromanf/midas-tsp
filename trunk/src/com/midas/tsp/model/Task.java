@@ -6,70 +6,81 @@ import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
 
 /**
- * @author CIDC
+ * @author Carlos Ivan Duarte C.
  * @date 22/03/2011
  *
  */
 @LogTs({@LogT(cycle=2, date="22/03/2011", id="15", time=3, who="CIDC")})
 public class Task extends PropertiesTSP {
 	/**
-	 * Atributo para el ciclo de la tarea
+	 * Attribute to the cycle of task
 	 */
-	private int cycle;
+	private Integer cycle;
 	/**
-	 * Atributo para la duraci—n estimada de la tarea
+	 * Attribute for the estimated duration task
 	 */
-	private int duration;
+	private Integer duration;
 	/**
-	 * Atributo para el tama–o estimado de la tarea
+	 * Attribute for the task's estimated size 
 	 */
-	private int size;
-
+	private Integer size;
 	/**
 	 * @param duration
 	 */
-	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
-	public void setDuration(int duration) {
+	@LocControl(value = {
+			@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
+	})
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
 	/**
 	 * @return
 	 */
-	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
-	public int getDuration() {
+	@LocControl(value = {
+			@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
+	})
+	public Integer getDuration() {
 		return duration;
 	}
 
 	/**
 	 * @param size
 	 */
-	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
-	public void setSize(int size) {
+	@LocControl(value = {
+			@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
+	})
+	public void setSize(Integer size) {
 		this.size = size;
 	}
 
 	/**
 	 * @return
 	 */
-	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
-	public int getSize() {
+	@LocControl(value = {
+			@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
+	})
+	public Integer getSize() {
 		return size;
 	}
 
 	/**
 	 * @param cycle
 	 */
-	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
-	public void setCycle(int cycle) {
+	@LocControl(value = {
+			@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
+	})
+	public void setCycle(Integer cycle) {
 		this.cycle = cycle;
 	}
 
 	/**
 	 * @return
 	 */
-	@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
-	public int getCycle() {
+	@LocControl(value = {
+			@Loc(cycle=1,size=1, type=LocControl.LocType.NEW, who="CIDC")
+	})
+	public Integer getCycle() {
 		return cycle;
-	}
+	}	
 }
