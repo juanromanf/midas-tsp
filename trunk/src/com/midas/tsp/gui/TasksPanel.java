@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -59,7 +60,7 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 
 	private static final long serialVersionUID = 4336026812403883469L;
 	private TaskController controller;
-	private JFrame frame;
+	//private JFrame frame;
 	private JTextField nameTextField;
 	private JTextField idTextField;
 	private JTextField durationTextField;
@@ -82,7 +83,7 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 	/**
 	 * Initializes the window
 	 * @param args
-	 */
+	 *//*
 	@LocControl(value = {
 			@Loc(size=10, type=LocControl.LocType.REUSED, who="CIDC", cycle=2)
 	})
@@ -97,7 +98,7 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 				}
 			}
 		});
-	}
+	}*/
 
 	
 	/**
@@ -123,15 +124,15 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 	})
 	private void initialize() throws TSPException {
 		controller = new TaskController();
-		frame = new JFrame();
-		frame.setBounds(100, 100, 722, 364);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		//frame = new JFrame();
+		//frame.setBounds(100, 100, 722, 364);
+		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		
 		JPanel mainPanel = new JPanel();
 		
 		taskPanel = new JPanel();
-		//GroupLayout groupLayout = new GroupLayout(this);
-		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+		GroupLayout groupLayout = new GroupLayout(this);
+		//GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
@@ -256,8 +257,8 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 		deleteButton = new JButton("-");
 		deleteButton.setAction(deleteAction);
 		buttonsPanel.add(deleteButton);
-		//this.setLayout(groupLayout);
-		frame.getContentPane().setLayout(groupLayout);
+		this.setLayout(groupLayout);
+		//frame.getContentPane().setLayout(groupLayout);
 		reFill();		
 	}
 
