@@ -212,8 +212,8 @@ public class TSPApplication {
 		JPanel tabDefects = new JPanel();
 		tabbedPane.addTab("Defects", new ImageIcon(TSPApplication.class.getResource("/com/midas/tsp/gui/resources/project-open.png")), tabDefects, null);
 		tabDefects.setLayout(new BorderLayout(0, 0));
-		DefectsPanel defectsPanel = new DefectsPanel();
-		tabDefects.add(defectsPanel);
+		//DefectsPanel defectsPanel = new DefectsPanel();
+		//tabDefects.add(defectsPanel);
 		
 	}
 	
