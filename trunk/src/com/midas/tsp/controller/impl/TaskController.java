@@ -22,7 +22,7 @@ import com.midas.tsp.util.Utility;
 @LogTs({@LogT(cycle=3, date="27/03/2011", id="28", time=120, who="CIDC")})
 public class TaskController extends AbstractController {
 	//private static final String PATH_PROPERTIES = "/Volumes/Archivos/ECOS_NotSync/workspace/midas-tsp/properties/task.properties";
-	private static final String PATH_PROPERTIES = "C:\\Users\\carlos.duarte\\workspace\\midas-tsp\\properties\\task.properties";
+	private static final String PATH_PROPERTIES = "properties/task.properties";
 	private BasicDAO dao;
 	private List<Task> tasks;
 	

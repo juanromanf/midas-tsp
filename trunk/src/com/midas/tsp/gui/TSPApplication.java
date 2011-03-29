@@ -8,27 +8,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -36,6 +29,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
+import javax.swing.UIManager;
 
 /**
  * Application GUI entry point Class.
@@ -53,13 +47,16 @@ public class TSPApplication {
 	private JTable tableTeam;
 	private JTextField txtSource;
 	private JTextField txtProperties;
-	private JTextField txtId;
-	private JTextField txtNames;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.jgoodies.looks.plastic.Plastic3DLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -195,97 +192,28 @@ public class TSPApplication {
 		tableTeam.getColumnModel().getColumn(1).setPreferredWidth(145);
 		panelTeam.add(tableTeam);
 		
+		
+		// TabPanels
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmTspMidas.getContentPane().add(tabbedPane, BorderLayout.CENTER);
-		
-		JPanel tabProject = new JPanel();
-		tabbedPane.addTab("Project Info", new ImageIcon(TSPApplication.class.getResource("/com/midas/tsp/gui/resources/project-open.png")), tabProject, null);
 		
 		JPanel tabTeam = new JPanel();
 		tabbedPane.addTab("Team", new ImageIcon(TSPApplication.class.getResource("/com/midas/tsp/gui/resources/people.png")), tabTeam, null);
 		tabTeam.setLayout(new BorderLayout(0, 0));
+		TeamPanel teamPanel = new TeamPanel();
+		tabTeam.add(teamPanel);
 		
 		JPanel tabTask = new JPanel();
-		tabbedPane.addTab("Task", new ImageIcon(TSPApplication.class.getResource("/com/midas/tsp/gui/resources/people.png")), tabTask, null);
+		tabbedPane.addTab("Tasks", new ImageIcon(TSPApplication.class.getResource("/com/midas/tsp/gui/resources/task.png")), tabTask, null);
 		tabTask.setLayout(new BorderLayout(0, 0));
-		
-		JSplitPane splitPane = new JSplitPane();
-		splitPane.setResizeWeight(0.1);
-		tabTeam.add(splitPane);
-		
 		JPanel tasksPanel = new TasksPanel();
 		tabTask.add(tasksPanel);
 		
-		JTree treeMembers = new JTree();
-		splitPane.setLeftComponent(treeMembers);
-		treeMembers.setModel(new DefaultTreeModel(
-			new DefaultMutableTreeNode("Members") {
-				{
-					add(new DefaultMutableTreeNode("Person 1"));
-					add(new DefaultMutableTreeNode("Person 2"));
-					add(new DefaultMutableTreeNode("Person 3"));
-					add(new DefaultMutableTreeNode("Person 4"));
-					add(new DefaultMutableTreeNode("Person 5"));
-				}
-			}
-		));
-		
-		JPanel panelEditMember = new JPanel();
-		splitPane.setRightComponent(panelEditMember);
-		panelEditMember.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
-			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
-		
-		JLabel lblId = new JLabel("ID:");
-		panelEditMember.add(lblId, "4, 4, right, default");
-		
-		txtId = new JTextField();
-		panelEditMember.add(txtId, "6, 4, fill, default");
-		txtId.setColumns(10);
-		
-		JLabel lblName = new JLabel("Name:");
-		panelEditMember.add(lblName, "4, 6, right, default");
-		
-		txtNames = new JTextField();
-		panelEditMember.add(txtNames, "6, 6, fill, default");
-		txtNames.setColumns(10);
-		
-		JLabel lblRole = new JLabel("Role:");
-		panelEditMember.add(lblRole, "4, 8, right, default");
-		
-		JComboBox cmbRole = new JComboBox();
-		cmbRole.setModel(new DefaultComboBoxModel(new String[] {"Role 1", "Role 2", "Role 3", "Role 4", "Role 5"}));
-		panelEditMember.add(cmbRole, "6, 8, fill, default");
-		
-		JToolBar toolbarTeam = new JToolBar();
-		tabTeam.add(toolbarTeam, BorderLayout.NORTH);	
-		
-		JButton btnAddMember = new JButton("");
-		btnAddMember.setIcon(new ImageIcon(TSPApplication.class.getResource("/com/midas/tsp/gui/resources/add.png")));
-		toolbarTeam.add(btnAddMember);
-		
-		JButton btnDelMember = new JButton("");
-		btnDelMember.setIcon(new ImageIcon(TSPApplication.class.getResource("/com/midas/tsp/gui/resources/remove.png")));
-		toolbarTeam.add(btnDelMember);
-		
-		toolbarTeam.addSeparator();
-		
-		JButton btnSaveMember = new JButton("");
-		btnSaveMember.setIcon(new ImageIcon(TSPApplication.class.getResource("/com/midas/tsp/gui/resources/disc.png")));
-		toolbarTeam.add(btnSaveMember);
+		JPanel tabDefects = new JPanel();
+		tabbedPane.addTab("Defects", new ImageIcon(TSPApplication.class.getResource("/com/midas/tsp/gui/resources/project-open.png")), tabDefects, null);
+		tabDefects.setLayout(new BorderLayout(0, 0));
+		DefectsPanel defectsPanel = new DefectsPanel();
+		tabDefects.add(defectsPanel);
 		
 	}
 	
