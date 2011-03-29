@@ -2,6 +2,7 @@ package com.midas.tsp.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,10 +22,11 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
+import com.midas.tsp.view.AbstractViewPanel;
 
 @LogTs({ @LogT(cycle = 3, date = "28/03/2011", id = "17", time = 120, who = "JCRF") })
 @SuppressWarnings("serial")
-public class TeamPanel extends JPanel {
+public class TeamPanel extends AbstractViewPanel {
 	private JTextField txtId;
 	private JTextField txtName;
 
@@ -104,6 +106,42 @@ public class TeamPanel extends JPanel {
 				.getResource("/com/midas/tsp/gui/resources/disc.png")));
 		toolBar.add(btnSave);
 
+	}
+
+	@Override
+	public void reFill() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void add() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearForm() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<String> validateForm() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
