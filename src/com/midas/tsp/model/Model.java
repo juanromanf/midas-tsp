@@ -13,7 +13,9 @@ import com.midas.tsp.annotations.LocControl;
 import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
 import com.midas.tsp.annotations.Plan;
+import com.midas.tsp.annotations.Plans;
 import com.midas.tsp.annotations.quality.LogD;
+import com.midas.tsp.annotations.quality.LogDs;
 import com.midas.tsp.annotations.quality.PlanQ;
 import com.midas.tsp.exceptions.TSPException;
 import com.midas.tsp.util.Utility;
@@ -31,8 +33,9 @@ import com.midas.tsp.util.Utility;
  */
 
 @LogTs({
-		@LogT(cycle = 2, date = "22/03/2011", id = "4", time = 70, who = "GDCS"),
-		@LogT(cycle = 3, date = "25/03/2011", id = "19", time = 146, who = "GDCS") })
+		@LogT(cycle = 2, date = "22/03/2011", id = "25", time = 70, who = "GDCS"),
+		@LogT(cycle = 3, date = "26/03/2011", id = "21", time = 146, who = "GDCS"),
+		@LogT(cycle = 3, date = "27/03/2011", id = "999", time = 30, who = "GDCS") })
 public class Model {
 
 	/**
@@ -306,7 +309,64 @@ public class Model {
 			add(tmpLoc);
 		}
 	}
+	
+	/**
+	 * Process an <code>LogTs</code> obtaining all the <code>LogT</code>
+	 * object it carries.
+	 * 
+	 * @param object
+	 *            the specified <code>LogT</code> to process
+	 * @throws TSPException
+	 *             In case any error were raised in the method invocation
+	 */
+	@LocControl(value = {
+			@Loc(cycle = 3, size = 3, type = LocControl.LocType.NEW, who = "GDCS") })
+	public void add(LogTs object) throws TSPException {
 
+		Utility.notNullValidation(object, "adding LogTs");
+		for (LogT tmp : object.value()) {
+			add(tmp);
+		}
+	}
+
+	/**
+	 * Process an <code>LogDs</code> obtaining all the <code>LogD</code>
+	 * object it carries.
+	 * 
+	 * @param object
+	 *            the specified <code>LogD</code> to process
+	 * @throws TSPException
+	 *             In case any error were raised in the method invocation
+	 */
+	@LocControl(value = {
+			@Loc(cycle = 3, size = 3, type = LocControl.LocType.NEW, who = "GDCS") })
+	public void add(LogDs object) throws TSPException {
+
+		Utility.notNullValidation(object, "adding LogDs");
+		for (LogD tmp : object.value()) {
+			add(tmp);
+		}
+	}
+	
+	/**
+	 * Process an <code>Plans</code> obtaining all the <code>Plan</code>
+	 * object it carries.
+	 * 
+	 * @param object
+	 *            the specified <code>Plan</code> to process
+	 * @throws TSPException
+	 *             In case any error were raised in the method invocation
+	 */
+	@LocControl(value = {
+			@Loc(cycle = 3, size = 3, type = LocControl.LocType.NEW, who = "GDCS") })
+	public void add(Plans object) throws TSPException {
+
+		Utility.notNullValidation(object, "adding Plans");
+		for (Plan tmp : object.value()) {
+			add(tmp);
+		}
+	}
+	
 	/**
 	 * @return Returns the estimated size of the processed project
 	 */
