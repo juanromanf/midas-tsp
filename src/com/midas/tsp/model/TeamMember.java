@@ -15,7 +15,7 @@ public class TeamMember extends PropertiesTSP {
 	/**
 	 * Attribute to the role of team member
 	 */
-	private int rol;
+	private Integer rol;
 
 	/**
 	 * @param rol
@@ -23,7 +23,7 @@ public class TeamMember extends PropertiesTSP {
 	@LocControl(value = {
 			@Loc(size=1, type=LocControl.LocType.NEW, who="CIDC", cycle=2)
 	})
-	public void setRol(int rol) {
+	public void setRol(Integer rol) {
 		this.rol = rol;
 	}
 
@@ -33,7 +33,7 @@ public class TeamMember extends PropertiesTSP {
 	@LocControl(value = {
 			@Loc(size=1, type=LocControl.LocType.NEW, who="CIDC", cycle=2)
 	})
-	public int getRol() {
+	public Integer getRol() {
 		return rol;
 	}	
 }

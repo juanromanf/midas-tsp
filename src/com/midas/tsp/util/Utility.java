@@ -2,6 +2,7 @@ package com.midas.tsp.util;
 
 import static com.midas.tsp.Constants.SEPARATOR_PROPERTIES;
 import static com.midas.tsp.Constants.TASK_PROPERTIES;
+import static com.midas.tsp.Constants.TEAM_PROPERTIES;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +19,7 @@ import com.midas.tsp.annotations.LogTs;
 import com.midas.tsp.exceptions.TSPException;
 import com.midas.tsp.model.PropertiesTSP;
 import com.midas.tsp.model.Task;
+import com.midas.tsp.model.TeamMember;
 
 /**
  * Utility class with transversal functionalities 
@@ -50,7 +52,7 @@ public class Utility {
 	 */
 	@LogTs({@LogT(cycle=2, date="17/04/2011", id="???", time=20, who="CIDC")})
 	@LocControl(value = {
-			@Loc(size=17, type=LocControl.LocType.NEW, who="CIDC", cycle=3)
+			@Loc(size=23, type=LocControl.LocType.NEW, who="CIDC", cycle=3)
 	})
 	public static Properties convertToProperties(List<? extends PropertiesTSP> propertiesTSP) throws TSPException {
 		Properties properties = null;
@@ -64,6 +66,12 @@ public class Utility {
 									 task.getDuration() + SEPARATOR_PROPERTIES + 
 									 task.getSize() + SEPARATOR_PROPERTIES + 
 									 task.getCycle());					
+				}
+				else if (propTSP instanceof TeamMember) {
+					TeamMember teamMember = (TeamMember)propTSP;
+					properties.setProperty(teamMember.getId(), 
+										   teamMember.getDescription() + SEPARATOR_PROPERTIES +
+										   teamMember.getRol());	
 				}
 				else {
 					properties.setProperty(propTSP.getId(), propTSP.getDescription());
@@ -82,7 +90,7 @@ public class Utility {
 	 * @throws TSPException
 	 */
 	@LocControl(value = {
-			@Loc(size=35, type=LocControl.LocType.NEW, who="CIDC", cycle=3)
+			@Loc(size=42, type=LocControl.LocType.NEW, who="CIDC", cycle=3)
 	})
 	@LogTs({@LogT(cycle=2, date="17/04/2011", id="???", time=30, who="CIDC")})
 	public static List<? extends PropertiesTSP> convertoToPropertiesTSP(String path) throws TSPException {
@@ -108,7 +116,14 @@ public class Utility {
 					task.setDuration(Integer.parseInt(attributes[2]));
 					task.setCycle(Integer.parseInt(attributes[3]));					
 					propertiesTSP.add(task);
-				}			
+				}		
+				else if (file.getName().equals(TEAM_PROPERTIES)) {
+					TeamMember teamMember = new TeamMember();
+					teamMember.setId(key);
+					teamMember.setDescription(attributes[0]);
+					teamMember.setRol(Integer.parseInt(attributes[1]));
+					propertiesTSP.add(teamMember);
+				}
 				else {
 					PropertiesTSP propTSP = new PropertiesTSP();
 					propTSP.setId(key);
