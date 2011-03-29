@@ -1,7 +1,5 @@
 package com.midas.tsp.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -10,9 +8,7 @@ import com.midas.tsp.annotations.Loc;
 import com.midas.tsp.annotations.LocControl;
 import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
-import com.midas.tsp.annotations.Plan;
 import com.midas.tsp.annotations.quality.LogD;
-import com.midas.tsp.annotations.quality.PlanQ;
 import com.midas.tsp.annotations.quality.ProcessPhase;
 
 
@@ -62,8 +58,8 @@ public class TspCalculate {
 		if (tspProject == null)
 			return;
 		
-		Set keys = tspProject.getPlanPerCycle().keySet();
-		Iterator keyIter = keys.iterator();
+		Set<?> keys = tspProject.getPlanPerCycle().keySet();
+		Iterator<?> keyIter = keys.iterator();
 	    while (keyIter.hasNext()) {
 	         Object key = keyIter.next();  // Get the next key.
 	         if (lastCycle < (Integer) key) {

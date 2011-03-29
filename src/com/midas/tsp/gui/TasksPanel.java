@@ -1,7 +1,6 @@
 package com.midas.tsp.gui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -14,12 +13,10 @@ import javax.swing.Action;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -46,6 +43,10 @@ import com.midas.tsp.exceptions.TSPException;
 import com.midas.tsp.model.PropertiesTSP;
 import com.midas.tsp.model.Task;
 import com.midas.tsp.view.AbstractViewPanel;
+import javax.swing.JToolBar;
+import javax.swing.ImageIcon;
+import javax.swing.JSplitPane;
+import java.awt.Dimension;
 
 /**
  * Contains the task manager panel
@@ -79,6 +80,8 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 	//private DefaultMutableTreeNode rootNode;
     private static final String ROOT_NODE = "Tareas";
 	private static final String CYCLE_NODE = "Ciclo ";
+	private JToolBar toolBar;
+	private JSplitPane splitPane;
 	
 	/**
 	 * Initializes the window
@@ -129,28 +132,27 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		
 		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout(0, 0));
+		
+		splitPane = new JSplitPane();
+		splitPane.setLastDividerLocation(150);
+		splitPane.setMaximumSize(new Dimension(72, 25));
+		splitPane.setResizeWeight(0.5);
+		mainPanel.add(splitPane, BorderLayout.CENTER);
+		
+		taskTree = new JTree();
+		splitPane.setLeftComponent(taskTree);
+		taskTree.setModel(treeModel);
+		taskTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		taskTree.addTreeSelectionListener(this);
+		taskTree.setEditable(true);
+		taskTree.setShowsRootHandles(true);
 		
 		taskPanel = new JPanel();
-		GroupLayout groupLayout = new GroupLayout(this);
-		//GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(mainPanel, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-					.addComponent(taskPanel, GroupLayout.PREFERRED_SIZE, 428, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(12)
-							.addComponent(taskPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addComponent(mainPanel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 326, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(23, Short.MAX_VALUE))
-		);
+		taskPanel.setSize(new Dimension(300, 150));
+		taskPanel.setMinimumSize(new Dimension(200, 10));
+		taskPanel.setMaximumSize(new Dimension(600, 500));
+		splitPane.setRightComponent(taskPanel);
 		taskPanel.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
@@ -232,32 +234,27 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 		JButton saveButton = new JButton("Guardar");
 		saveButton.setAction(acceptAction);
 		taskPanel.add(saveButton, "24, 16");
-		mainPanel.setLayout(new BorderLayout(0, 0));
+		splitPane.setDividerLocation(200);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		mainPanel.add(scrollPane, BorderLayout.CENTER);
 		
-		taskTree = new JTree();
+		
+		
 		treeModel = new DefaultTreeModel(new TaskTreeModel());
-		taskTree.setModel(treeModel);
-		taskTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		taskTree.addTreeSelectionListener(this);
-		taskTree.setEditable(true);
-		taskTree.setShowsRootHandles(true);
-		scrollPane.setViewportView(taskTree);
+		setLayout(new BorderLayout(0, 0));
 		
-		JPanel buttonsPanel = new JPanel();
-		mainPanel.add(buttonsPanel, BorderLayout.NORTH);
-		buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+		toolBar = new JToolBar();
+		mainPanel.add(toolBar, BorderLayout.NORTH);
 		
-		addButton = new JButton("+");
+		addButton = new JButton("");
+		addButton.setIcon(new ImageIcon(TasksPanel.class.getResource("/com/midas/tsp/gui/resources/add.png")));
+		toolBar.add(addButton);
 		addButton.setAction(addAction);
-		buttonsPanel.add(addButton);
 		
-		deleteButton = new JButton("-");
+		deleteButton = new JButton("");
+		deleteButton.setIcon(new ImageIcon(TasksPanel.class.getResource("/com/midas/tsp/gui/resources/remove.png")));
+		toolBar.add(deleteButton);
 		deleteButton.setAction(deleteAction);
-		buttonsPanel.add(deleteButton);
-		this.setLayout(groupLayout);
+		add(mainPanel);
 		//frame.getContentPane().setLayout(groupLayout);
 		reFill();		
 	}
@@ -531,7 +528,8 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 				@Loc(size=2, type=LocControl.LocType.NEW, who="CIDC", cycle=3)
 		})
 		public AddAction() {
-			putValue(NAME, "+");
+			putValue(SMALL_ICON, new ImageIcon(TasksPanel.class.getResource("/com/midas/tsp/gui/resources/add.png")));
+			putValue(NAME, "");
 			putValue(SHORT_DESCRIPTION, "Add");
 		}
 		/* (non-Javadoc)
@@ -556,7 +554,9 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 				@Loc(size=2, type=LocControl.LocType.NEW, who="CIDC", cycle=3)
 		})
 		public DeleteAction() {
-			putValue(NAME, "-");
+			putValue(SMALL_ICON, new ImageIcon(TasksPanel.class.getResource("/com/midas/tsp/gui/resources/remove.png")));
+			putValue(LARGE_ICON_KEY, new ImageIcon(TasksPanel.class.getResource("/com/midas/tsp/gui/resources/remove.png")));
+			putValue(NAME, "");
 			putValue(SHORT_DESCRIPTION, "Delete");
 		}
 		/* (non-Javadoc)
