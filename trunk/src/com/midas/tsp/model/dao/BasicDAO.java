@@ -9,6 +9,9 @@ import com.midas.tsp.annotations.Loc;
 import com.midas.tsp.annotations.LocControl;
 import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
+import com.midas.tsp.annotations.quality.LogD;
+import com.midas.tsp.annotations.quality.LogDs;
+import com.midas.tsp.annotations.quality.ProcessPhase;
 import com.midas.tsp.exceptions.TSPException;
 
 /**
@@ -17,7 +20,9 @@ import com.midas.tsp.exceptions.TSPException;
  * @date 22/03/2011
  *
  */
-@LogTs({@LogT(cycle=1, date="14/03/2011", id="999", time=81, who="CIDC")})
+@LogTs({@LogT(cycle=1, date="14/03/2011", id="999", time=81, who="CIDC"), 
+		@LogT(cycle=1, date="27/03/2011", id="999", time=81, who="CIDC")})
+@LogDs({@LogD(cycleDetected=3, cycleInjected=2, date="27/03/2011", id=145, phaseDetected=ProcessPhase.IMPLEMENTATION, phaseInjected=ProcessPhase.IMPLEMENTATION, removed = true)})		
 public class BasicDAO {
 	
 	private String pathProperties;

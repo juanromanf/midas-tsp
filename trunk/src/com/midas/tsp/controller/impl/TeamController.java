@@ -35,6 +35,8 @@ public class TeamController extends AbstractController {
 	 * Default Constructor, initialize DAO
 	 * @throws TSPException
 	 */
+	@LocControl(value = {
+			@Loc(cycle = 3, size = 3, type = LocControl.LocType.NEW, who = "CIDC")})
 	public TeamController() throws TSPException {
 		dao = new BasicDAO(TEAM_PATH);
 		teamMembers = findTeamMembers();
@@ -82,10 +84,14 @@ public class TeamController extends AbstractController {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@LocControl(value = {
+			@Loc(cycle = 3, size = 1, type = LocControl.LocType.NEW, who = "CIDC")})
 	public List<PropertiesTSP> findRoles() throws TSPException {
 		return (List<PropertiesTSP>) Utility.convertoToPropertiesTSP(ROLES_PATH);
 	}
 	
+	@LocControl(value = {
+			@Loc(cycle = 3, size = 6, type = LocControl.LocType.NEW, who = "CIDC")})
 	public PropertiesTSP findRolById(Integer id) throws TSPException {
 		for (PropertiesTSP rol: findRoles()) {
 			if (rol.getId().equals(id.toString())) {
@@ -95,6 +101,8 @@ public class TeamController extends AbstractController {
 		return null;
 	}
 	
+	@LocControl(value = {
+			@Loc(cycle = 3, size = 6, type = LocControl.LocType.NEW, who = "CIDC")})
 	public PropertiesTSP findRolByDescription(String value) throws TSPException {
 		for (PropertiesTSP rol: roles) {
 			if (rol.getDescription().equals(value)) {
@@ -124,10 +132,14 @@ public class TeamController extends AbstractController {
 		this.teamMembers = teamMember;
 	}
 
+	@LocControl(value = {
+			@Loc(cycle = 3, size = 1, type = LocControl.LocType.NEW, who = "CIDC")})
 	public List<PropertiesTSP> getRoles() {
 		return roles;
 	}
 
+	@LocControl(value = {
+			@Loc(cycle = 3, size = 1, type = LocControl.LocType.NEW, who = "CIDC")})
 	public void setRoles(List<PropertiesTSP> roles) {
 		this.roles = roles;
 	}

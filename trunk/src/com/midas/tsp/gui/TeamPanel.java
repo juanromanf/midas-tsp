@@ -22,6 +22,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
+import com.midas.tsp.annotations.Loc;
+import com.midas.tsp.annotations.LocControl;
 import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
 import com.midas.tsp.controller.impl.TeamController;
@@ -36,7 +38,8 @@ import com.midas.tsp.view.AbstractViewPanel;
  *
  */
 @LogTs({ @LogT(cycle = 3, date = "28/03/2011", id = "17", time = 120, who = "JCRF"),
-		 @LogT(cycle = 3, date = "29/03/2011", id = "17", time = 60, who = "CIDC")})
+		 @LogT(cycle = 3, date = "29/03/2011", id = "17", time = 60, who = "CIDC"),
+		 @LogT(cycle = 3, date = "30/03/2011", id = "17", time = 60, who = "CIDC")})
 @SuppressWarnings("serial")
 public class TeamPanel extends AbstractViewPanel implements TableModelListener {
 	private TeamController controller;
@@ -50,9 +53,7 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
 	private TeamTableModel teamTableModel;
 	private int indexTeamMemberSelected;
 
-	/**
-	 * 
-	 */
+	@LocControl(@Loc(cycle=3, size=5, type=LocControl.LocType.NEW, who="CIDC"))
 	public TeamPanel() {
 		try {
 			initialize();
@@ -67,6 +68,7 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
 	}
 
 	@Override
+	@LocControl(@Loc(cycle=3, size=5, type=LocControl.LocType.NEW, who="CIDC"))
 	public void save() {
 		try {
 			controller.save();
@@ -76,12 +78,14 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
 	}
 
 	@Override
+	@LocControl(@Loc(cycle=3, size=2, type=LocControl.LocType.NEW, who="CIDC"))
 	public void add() {
 		controller.getTeamMembers().add(new TeamMember());
 		teamTableModel.fireTableDataChanged();		
 	}
 
 	@Override
+	@LocControl(@Loc(cycle=3, size=6, type=LocControl.LocType.NEW, who="CIDC"))
 	public void delete() {
 		int option = JOptionPane.showConfirmDialog(this, "Esta seguro que desea eliminar el integrante?");
 		if (option == JOptionPane.YES_OPTION) {
@@ -97,11 +101,13 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
 	}
 
 	@Override
+	@LocControl(@Loc(cycle=3, size=1, type=LocControl.LocType.NEW, who="CIDC"))
 	public List<String> validateForm() {
 		return null;
 	}
 
 	@Override
+	@LocControl(@Loc(cycle=3, size=24, type=LocControl.LocType.NEW, who="CIDC"))
 	public void tableChanged(TableModelEvent e) {
 		try {
 			int row = e.getFirstRow();
@@ -133,6 +139,7 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
 	 * Initialize the contents of the frame.
 	 * @throws TSPException 
 	 */
+	@LocControl(@Loc(cycle=3, size=26, type=LocControl.LocType.NEW, who="CIDC"))
 	private void initialize() throws TSPException {
 		controller = new TeamController();
 		setLayout(new BorderLayout(0, 0));
@@ -162,6 +169,7 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
 		add(table);
 	}
 
+	@LocControl(@Loc(cycle=3, size=8, type=LocControl.LocType.NEW, who="CIDC"))
 	private void setUpRoleColumn(JTable table, TableColumn roleColumn) throws TSPException {
 		JComboBox comboBox = new JComboBox();
 		List<PropertiesTSP> roles = controller.findRoles();
@@ -179,6 +187,7 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
 	 *
 	 */
 	private class RowListener implements ListSelectionListener {
+		@LocControl(@Loc(cycle=3, size=3, type=LocControl.LocType.NEW, who="CIDC"))
 		public void valueChanged(ListSelectionEvent event) {
 			if (event.getValueIsAdjusting()) {
 				indexTeamMemberSelected = table.getSelectionModel().getLeadSelectionIndex();
@@ -196,10 +205,12 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
     	private String[] columnNames = {"Id.", "Nombre", "Rol"};
     	private Object[][] data; 
     	
+    	@LocControl(@Loc(cycle=3, size=1, type=LocControl.LocType.NEW, who="CIDC"))
     	public TeamTableModel() throws TSPException {
     		loadModel();
     	}
     	
+    	@LocControl(@Loc(cycle=3, size=10, type=LocControl.LocType.NEW, who="CIDC"))
     	private void loadModel() throws TSPException {
     		List<TeamMember> teamMembers = controller.getTeamMembers();
     		data = new Object[teamMembers.size()][3];
@@ -213,37 +224,45 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
     		}
     	}
 
+    	@LocControl(@Loc(cycle=3, size=1, type=LocControl.LocType.NEW, who="CIDC"))
         public int getColumnCount() {
             return columnNames.length;
         }
 
+    	@LocControl(@Loc(cycle=3, size=1, type=LocControl.LocType.NEW, who="CIDC"))
         public int getRowCount() {
             return data.length;
         }
 
+    	@LocControl(@Loc(cycle=3, size=1, type=LocControl.LocType.NEW, who="CIDC"))
         public String getColumnName(int col) {
             return columnNames[col];
         }
 
+    	@LocControl(@Loc(cycle=3, size=1, type=LocControl.LocType.NEW, who="CIDC"))
         public Object getValueAt(int row, int col) {
             return data[row][col];
         }
 
         @SuppressWarnings({ "unchecked", "rawtypes" })
+        @LocControl(@Loc(cycle=3, size=1, type=LocControl.LocType.NEW, who="CIDC"))
 		public Class getColumnClass(int c) {
             return getValueAt(0, c).getClass();
         }
 
+        @LocControl(@Loc(cycle=3, size=1, type=LocControl.LocType.NEW, who="CIDC"))
         public boolean isCellEditable(int row, int col) {
             return true;            
         }
 
+        @LocControl(@Loc(cycle=3, size=2, type=LocControl.LocType.NEW, who="CIDC"))
         public void setValueAt(Object value, int row, int col) {
             data[row][col] = value;
             fireTableCellUpdated(row, col);
         }
        
         @Override
+        @LocControl(@Loc(cycle=3, size=5, type=LocControl.LocType.NEW, who="CIDC"))
         public void fireTableDataChanged() {
         	try {
 				loadModel();
@@ -259,6 +278,7 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
      *
      */
     private class AddAction extends AbstractAction {
+    	@LocControl(@Loc(cycle=3, size=1, type=LocControl.LocType.NEW, who="CIDC"))
 		public void actionPerformed(ActionEvent e) {
 			add();
 		}
@@ -270,6 +290,7 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
      *
      */
     private class DeleteAction extends AbstractAction {
+    	@LocControl(@Loc(cycle=3, size=1, type=LocControl.LocType.NEW, who="CIDC"))
 		public void actionPerformed(ActionEvent e) {
 			delete();
 		}
@@ -281,6 +302,7 @@ public class TeamPanel extends AbstractViewPanel implements TableModelListener {
      *
      */
     private class SaveAction extends AbstractAction {
+    	@LocControl(@Loc(cycle=3, size=1, type=LocControl.LocType.NEW, who="CIDC"))
 		public void actionPerformed(ActionEvent e) {
 			save();
 		}
