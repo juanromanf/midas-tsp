@@ -1,8 +1,10 @@
 package com.midas.tsp.controller.impl;
 
+import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
+import com.midas.tsp.Constants;
 import com.midas.tsp.annotations.Loc;
 import com.midas.tsp.annotations.LocControl;
 import com.midas.tsp.annotations.LogT;
@@ -16,17 +18,19 @@ import com.midas.tsp.util.Utility;
 
 
 /**
- * Controller TeamMembersController
+ * Controller TeamController
  * @author Carlos Ivan Duarte C.
  * @date 28/03/2011
  */
 @LogTs({@LogT(cycle=3, date="27/03/2011", id="28", time=120, who="CIDC")})
 public class TeamController extends AbstractController {
-	private static final String TEAM_PATH = "/Volumes/Archivos/ECOS_NotSync/workspace/midas-tsp/properties/team.properties";
+	//private static final String TEAM_PATH = "/Volumes/Archivos/ECOS_NotSync/workspace/midas-tsp/properties/team.properties";
+	private static final String TEAM_PATH = "properties" + File.separator + Constants.TEAM_PROPERTIES;
 	//private static final String ROLES_PATH = "C:\\Users\\carlos.duarte\\workspace\\midas-tsp\\properties\\team.properties";
 	private static final String ROLES_PATH = "/Volumes/Archivos/ECOS_NotSync/workspace/midas-tsp/properties/roles.properties";
 	private BasicDAO dao;
 	private List<TeamMember> teamMembers;
+	private List<PropertiesTSP> roles;
 	
 	/**
 	 * Default Constructor, initialize DAO
@@ -35,6 +39,7 @@ public class TeamController extends AbstractController {
 	public TeamController() throws TSPException {
 		dao = new BasicDAO(TEAM_PATH);
 		teamMembers = findTeamMembers();
+		roles = findRoles();
 	}
 	
 	/**
@@ -82,9 +87,18 @@ public class TeamController extends AbstractController {
 		return (List<PropertiesTSP>) Utility.convertoToPropertiesTSP(ROLES_PATH);
 	}
 	
-	public PropertiesTSP findRol(Integer id) throws TSPException {
+	public PropertiesTSP findRolById(Integer id) throws TSPException {
 		for (PropertiesTSP rol: findRoles()) {
 			if (rol.getId().equals(id.toString())) {
+				return rol;
+			}
+		}
+		return null;
+	}
+	
+	public PropertiesTSP findRolByDescription(String value) throws TSPException {
+		for (PropertiesTSP rol: roles) {
+			if (rol.getDescription().equals(value)) {
 				return rol;
 			}
 		}
@@ -109,5 +123,13 @@ public class TeamController extends AbstractController {
 			@Loc(cycle = 3, size = 1, type = LocControl.LocType.NEW, who = "CIDC")})
 	public void setTeamMembers(List<TeamMember> teamMember) {
 		this.teamMembers = teamMember;
+	}
+
+	public List<PropertiesTSP> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<PropertiesTSP> roles) {
+		this.roles = roles;
 	}
 }
