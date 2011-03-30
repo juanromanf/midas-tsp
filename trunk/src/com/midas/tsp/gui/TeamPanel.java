@@ -1,8 +1,11 @@
 package com.midas.tsp.gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,9 +15,12 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import com.midas.tsp.annotations.LogT;
 import com.midas.tsp.annotations.LogTs;
@@ -26,11 +32,19 @@ import com.midas.tsp.view.AbstractViewPanel;
 
 @LogTs({ @LogT(cycle = 3, date = "28/03/2011", id = "17", time = 120, who = "JCRF") })
 @SuppressWarnings("serial")
-public class TeamPanel extends AbstractViewPanel {
+public class TeamPanel extends AbstractViewPanel implements TableModelListener {
 	//private JTextField txtId;
 	//private JTextField txtName;
 	private TeamController controller;
 	private JTable table;
+	private JButton btnAdd;
+	private JButton btnDelete;
+	private JButton btnSave;
+	private final Action addAction = new AddAction();
+	private final Action deleteAction = new DeleteAction();
+	private final Action saveAction = new SaveAction();
+	private TeamTableModel teamTableModel;
+	private int indexTeamMemberSelected;
 
 	/**
 	 * Create the panel.
@@ -106,22 +120,27 @@ public class TeamPanel extends AbstractViewPanel {
 		JToolBar toolBar = new JToolBar();
 		add(toolBar, BorderLayout.NORTH);
 
-		JButton btnAdd = new JButton("");
+		btnAdd = new JButton("");
+		btnAdd.setAction(addAction);
 		btnAdd.setIcon(new ImageIcon(TeamPanel.class
 				.getResource("/com/midas/tsp/gui/resources/add.png")));
 		toolBar.add(btnAdd);
 
-		JButton btnDelete = new JButton("");
+		btnDelete = new JButton("");
+		btnDelete.setAction(deleteAction);
 		btnDelete.setIcon(new ImageIcon(TeamPanel.class
 				.getResource("/com/midas/tsp/gui/resources/remove.png")));
 		toolBar.add(btnDelete);
 
-		JButton btnSave = new JButton("");
+		btnSave = new JButton("");
+		btnSave.setAction(saveAction);
 		btnSave.setIcon(new ImageIcon(TeamPanel.class
 				.getResource("/com/midas/tsp/gui/resources/disc.png")));
 		toolBar.add(btnSave);
 		table = new JTable();
-		table.setModel(new DefectsTableModel());
+		teamTableModel = new TeamTableModel();
+		teamTableModel.addTableModelListener(this);
+		table.setModel(teamTableModel);
 		table.getSelectionModel().addListSelectionListener(new RowListener());
 		setUpRoleColumn(table, table.getColumnModel().getColumn(2));
 		add(table);
@@ -141,24 +160,30 @@ public class TeamPanel extends AbstractViewPanel {
 	private class RowListener implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent event) {
 			if (event.getValueIsAdjusting()) {
-				return;
+				indexTeamMemberSelected = table.getSelectionModel().getLeadSelectionIndex();
 			}
 		}
 	}
 	
-    private class DefectsTableModel extends AbstractTableModel {
+    private class TeamTableModel extends AbstractTableModel {
     	private static final long serialVersionUID = 2202491816861255310L;
     	private String[] columnNames = {"Id.", "Nombre", "Rol"};
     	private Object[][] data; 
     	
-    	public DefectsTableModel() throws TSPException {
+    	public TeamTableModel() throws TSPException {
+    		loadModel();
+    	}
+    	
+    	private void loadModel() throws TSPException {
     		List<TeamMember> teamMembers = controller.getTeamMembers();
     		data = new Object[teamMembers.size()][3];
     		for (int i = 0; i < teamMembers.size(); i++) {
     			TeamMember teamMember = teamMembers.get(i);
     			data[i][0] = teamMember.getId();
     			data[i][1] = teamMember.getDescription();
-    			data[i][2] = controller.findRol(teamMember.getRol());    			
+    			if (teamMember.getRol() != null) {
+    				data[i][2] = controller.findRolById(teamMember.getRol());
+    			}
     		}
     	}
 
@@ -184,7 +209,7 @@ public class TeamPanel extends AbstractViewPanel {
          * then the last column would contain text ("true"/"false"),
          * rather than a check box.
          */
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int c) {
             return getValueAt(0, c).getClass();
         }
@@ -207,8 +232,34 @@ public class TeamPanel extends AbstractViewPanel {
             data[row][col] = value;
             fireTableCellUpdated(row, col);
         }
-
+       
+        @Override
+        public void fireTableDataChanged() {
+        	try {
+				loadModel();
+			} catch (TSPException e) {
+				JOptionPane.showMessageDialog(TeamPanel.this, e.getMessage());
+			}
+        }
     }
+    
+    private class AddAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			add();
+		}
+	}
+    
+    private class DeleteAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			delete();
+		}
+	}
+    
+	private class SaveAction extends AbstractAction {
+		public void actionPerformed(ActionEvent e) {
+			save();
+		}
+	}
 
 	@Override
 	public void reFill() {
@@ -218,32 +269,65 @@ public class TeamPanel extends AbstractViewPanel {
 
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		try {
+			controller.save();
+		} catch (TSPException ex) {
+			JOptionPane.showMessageDialog(TeamPanel.this, ex.getMessage());
+		}
 	}
 
 	@Override
 	public void add() {
-		// TODO Auto-generated method stub
-		
+		controller.getTeamMembers().add(new TeamMember());
+		teamTableModel.fireTableDataChanged();		
 	}
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
-		
+		int option = JOptionPane.showConfirmDialog(this, "Esta seguro que desea eliminar el integrante?");
+		if (option == JOptionPane.YES_OPTION) {
+			controller.getTeamMembers().remove(indexTeamMemberSelected);
+			teamTableModel.fireTableDataChanged();
+			table.repaint();	
+		}
 	}
 
 	@Override
 	public void clearForm() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public List<String> validateForm() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	public void tableChanged(TableModelEvent e) {
+		try {
+			int row = e.getFirstRow();
+	        int column = e.getColumn();
+	        TableModel model = (TableModel)e.getSource();
+	        //String columnName = model.getColumnName(column);
+	        Object data = model.getValueAt(row, column);
+	        TeamMember teamMember = controller.getTeamMembers().get(row);
+	        switch (column) {
+			case 0:
+				teamMember.setId(data.toString());
+				break;
+			case 1:
+				teamMember.setDescription(data.toString());
+				break;
+			case 2:
+				PropertiesTSP rol = controller.findRolByDescription(data.toString());
+				teamMember.setRol(Integer.parseInt(rol.getId()));
+				break;
+			default:
+				break;
+			}
+		}
+		catch (Exception ex) {
+			JOptionPane.showMessageDialog(TeamPanel.this, ex);
+		}
+	}
 }
