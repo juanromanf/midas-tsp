@@ -19,15 +19,14 @@ import com.midas.tsp.util.Utility;
 
 /**
  * Controller TeamController
- * @author Carlos Ivan Duarte C.
+ * @author Carlos Ivan Duarte Cubides
  * @date 28/03/2011
  */
-@LogTs({@LogT(cycle=3, date="27/03/2011", id="28", time=120, who="CIDC")})
+@LogTs({@LogT(cycle=3, date="27/03/2011", id="28", time=120, who="CIDC"),
+		@LogT(cycle=3, date="29/03/2011", id="18", time=70, who="CIDC")})
 public class TeamController extends AbstractController {
-	//private static final String TEAM_PATH = "/Volumes/Archivos/ECOS_NotSync/workspace/midas-tsp/properties/team.properties";
 	private static final String TEAM_PATH = "properties" + File.separator + Constants.TEAM_PROPERTIES;
-	//private static final String ROLES_PATH = "C:\\Users\\carlos.duarte\\workspace\\midas-tsp\\properties\\team.properties";
-	private static final String ROLES_PATH = "/Volumes/Archivos/ECOS_NotSync/workspace/midas-tsp/properties/roles.properties";
+	private static final String ROLES_PATH = "properties" + File.separator + Constants.ROLES_PROPERTIES;
 	private BasicDAO dao;
 	private List<TeamMember> teamMembers;
 	private List<PropertiesTSP> roles;

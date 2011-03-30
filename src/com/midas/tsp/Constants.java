@@ -10,5 +10,6 @@ public interface Constants {
 	String DEFECTS_PROPERTIES = "defects.properties";
 	String TEAM_PROPERTIES = "team.properties";
 	String TASK_PROPERTIES = "task.properties";
+	String ROLES_PROPERTIES = "roles.properties";
 	String BLANK = "";
 }

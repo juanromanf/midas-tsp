@@ -1,7 +1,7 @@
 package com.midas.tsp.gui;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +10,15 @@ import java.util.TreeMap;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.JTree;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -43,10 +42,6 @@ import com.midas.tsp.exceptions.TSPException;
 import com.midas.tsp.model.PropertiesTSP;
 import com.midas.tsp.model.Task;
 import com.midas.tsp.view.AbstractViewPanel;
-import javax.swing.JToolBar;
-import javax.swing.ImageIcon;
-import javax.swing.JSplitPane;
-import java.awt.Dimension;
 
 /**
  * Contains the task manager panel
@@ -61,7 +56,6 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 
 	private static final long serialVersionUID = 4336026812403883469L;
 	private TaskController controller;
-	//private JFrame frame;
 	private JTextField nameTextField;
 	private JTextField idTextField;
 	private JTextField durationTextField;
@@ -77,32 +71,10 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 	private final Action deleteAction = new DeleteAction();
 	private DefaultMutableTreeNode nodeSelected; 
 	private DefaultTreeModel treeModel;
-	//private DefaultMutableTreeNode rootNode;
-    private static final String ROOT_NODE = "Tareas";
+	private static final String ROOT_NODE = "Tareas";
 	private static final String CYCLE_NODE = "Ciclo ";
 	private JToolBar toolBar;
 	private JSplitPane splitPane;
-	
-	/**
-	 * Initializes the window
-	 * @param args
-	 *//*
-	@LocControl(value = {
-			@Loc(size=10, type=LocControl.LocType.REUSED, who="CIDC", cycle=2)
-	})
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TasksPanel window = new TasksPanel();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
 	
 	/**
 	 * Create the application.
@@ -127,10 +99,6 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 	})
 	private void initialize() throws TSPException {
 		controller = new TaskController();
-		//frame = new JFrame();
-		//frame.setBounds(100, 100, 722, 364);
-		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
-		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		
@@ -235,13 +203,8 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 		saveButton.setAction(acceptAction);
 		taskPanel.add(saveButton, "24, 16");
 		splitPane.setDividerLocation(200);
-		
-		
-		
-		
 		treeModel = new DefaultTreeModel(new TaskTreeModel());
-		setLayout(new BorderLayout(0, 0));
-		
+		setLayout(new BorderLayout(0, 0));		
 		toolBar = new JToolBar();
 		mainPanel.add(toolBar, BorderLayout.NORTH);
 		
@@ -254,8 +217,7 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 		deleteButton.setIcon(new ImageIcon(TasksPanel.class.getResource("/com/midas/tsp/gui/resources/remove.png")));
 		toolBar.add(deleteButton);
 		deleteButton.setAction(deleteAction);
-		add(mainPanel);
-		//frame.getContentPane().setLayout(groupLayout);
+		add(mainPanel);		
 		reFill();		
 	}
 
@@ -450,10 +412,7 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 	public DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent,
 			Object child, boolean shouldBeVisible) {
 		DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(child);
-
 		treeModel.insertNodeInto(childNode, parent, parent.getChildCount());
-
-		// Make sure the user can see the lovely new node.
 		if (shouldBeVisible) {
 			taskTree.scrollPathToVisible(new TreePath(childNode.getPath()));
 		}
@@ -466,9 +425,6 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 	 * @date 27/03/2011
 	 */
 	private class TaskTreeModel extends DefaultMutableTreeNode {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		/**
@@ -480,7 +436,6 @@ public class TasksPanel extends AbstractViewPanel implements TreeSelectionListen
 		})
 		public TaskTreeModel() throws TSPException {
 			super(ROOT_NODE);
-			//rootNode = this;
 			TreeMap<String, List<Task>> tasks = convertListToMap(controller.getTasks());
 			for (Map.Entry<String, List<Task>> entry : tasks.entrySet()) {
 				DefaultMutableTreeNode node = new DefaultMutableTreeNode(entry.getKey());
